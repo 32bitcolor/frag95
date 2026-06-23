@@ -1,0 +1,6 @@
+# Live session: passwordless sudo for the wheel group.
+# The live user's password is locked, so this is what makes admin tasks (and
+# AUR builds via makepkg) work out of the box on the live image.
+# NOTE: the Calamares-installed system uses a normal password-prompting sudo
+# policy; this file is a live-image convenience.
+%wheel ALL=(ALL:ALL) NOPASSWD: ALL

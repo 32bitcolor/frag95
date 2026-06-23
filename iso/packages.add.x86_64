@@ -1,0 +1,52 @@
+# Frag95 Phase 1 package additions (appended to releng's live-boot packages).
+# Goal: minimal bootable base + KDE Plasma (X11 default) + autologin live user.
+# Later phases add: NVIDIA/AMD drivers, gaming stack, retro-games, theming,
+# Calamares, AUR (paru/octopi), sensors/thermal — see docs/PLAN.md.
+
+# --- CPU microcode (both, for universal hardware support) ---
+intel-ucode
+amd-ucode
+
+# --- Kernels: mainline + LTS fallback for broad hardware compatibility ---
+linux-lts
+linux-lts-headers
+
+# --- Display server (X11 default session) ---
+xorg-server
+xorg-xinit
+xorg-xrandr
+
+# --- KDE Plasma (minimal desktop for Phase 1) ---
+plasma-desktop
+plasma-workspace
+plasma-x11-session
+plasma-pa
+plasma-nm
+powerdevil
+kscreen
+sddm
+kde-cli-tools
+systemsettings
+
+# --- Core KDE apps ---
+konsole
+dolphin
+kate
+ark
+spectacle
+
+# --- Audio (PipeWire) ---
+pipewire
+pipewire-pulse
+pipewire-alsa
+wireplumber
+
+# --- Networking ---
+networkmanager
+
+# --- Base utilities ---
+sudo
+git
+nano
+vim
+firefox

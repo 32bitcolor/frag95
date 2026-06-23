@@ -1,0 +1,5 @@
+# Disable Plasma screen locking on the live image. The live user's password is
+# locked (SDDM autologin), so an automatic lock would otherwise trap the user.
+[Daemon]
+Autolock=false
+LockOnResume=false

@@ -1,0 +1,7 @@
+# Everything in this repo is consumed inside a Linux build container, so it
+# must use LF line endings — even when checked out on Windows. CRLF would break
+# shell scripts (bash chokes on \r) and archiso config files.
+* text=auto eol=lf
+
+# Windows entrypoint is the one exception.
+*.ps1 text eol=crlf

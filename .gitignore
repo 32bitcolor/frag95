@@ -1,0 +1,14 @@
+# Build artifacts
+/out/
+/work/
+*.iso
+*.iso.sig
+
+# Prebuilt local-repo packages (regenerated each build)
+iso/airootfs/var/lib/frag95-repo/*.pkg.tar.*
+iso/airootfs/var/lib/frag95-repo/frag95.db*
+iso/airootfs/var/lib/frag95-repo/frag95.files*
+
+# OS cruft
+.DS_Store
+Thumbs.db
