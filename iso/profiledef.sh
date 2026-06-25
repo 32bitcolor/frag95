@@ -4,7 +4,10 @@
 # Frag95 archiso profile definition (overrides releng's profiledef.sh).
 
 iso_name="frag95"
-iso_label="FRAG95_$(date +%Y%m)"
+# Volume label doubles as the FAT32 ESP label, capped at 11 chars (and archiso
+# references it verbatim via archisolabel= to find the boot device, so a
+# truncated label = unbootable). "FRAG95_" (7) + 2-digit year + month = 11.
+iso_label="FRAG95_$(date +%y%m)"
 iso_publisher="Frag95 Project"
 iso_application="Frag95 Live / Install"
 iso_version="$(date +%Y.%m.%d)"
@@ -28,6 +31,7 @@ bootstrap_tarball_compression=(
 file_permissions=(
     ["/etc/shadow"]="0:0:400"
     ["/root"]="0:0:750"
+    ["/root/customize_airootfs.sh"]="0:0:755"
     ["/etc/sudoers.d/10-wheel-nopasswd"]="0:0:440"
     ["/usr/local/bin/"]="0:0:755"
 )
