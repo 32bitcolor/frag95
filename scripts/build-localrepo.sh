@@ -34,12 +34,28 @@ REFRESH="${REFRESH_AUR:-0}"
 #   nvidia-470xx-dkms   legacy NVIDIA kmod source -> installed by the nvidia-legacy profile
 #   vkbasalt            Vulkan post-processing     -> pre-installed (gaming overlay)
 #   lib32-vkbasalt      32-bit vkbasalt            -> pre-installed (for 32-bit games)
+# Phase 4 (old-PC-games): dosbox-staging needs iir1+munt; bottles pulls a flat
+# chain of AUR deps. All deps are listed BEFORE their dependents so the
+# incremental [frag95] indexing resolves each from the just-built repo:
+#   iir1, munt                -> dosbox-staging deps
+#   dosbox-staging            -> pre-installed (modern DOSBox fork)
+#   dxvk-bin                  -> pre-installed (DXVK for Wine/Lutris)
+#   heroic-games-launcher-bin -> pre-installed (Epic/GOG/Amazon launcher)
+#   fvs2..python-pathvalidate -> bottles' AUR dependencies
+#   bottles                   -> pre-installed (Wine prefix manager)
 # (qt-sudo / nvidia-470xx-utils have only official deps. nvidia-470xx-dkms
 #  depends on nvidia-470xx-utils, but only at *runtime* — packaging the DKMS
 #  source needs nothing installed — so it's built with makepkg --nodeps and the
 #  runtime dep is satisfied from [frag95] when the installer pulls it onto the
 #  target. That avoids having to install one AUR package to build the next.)
-PKGS=(paru qt-sudo octopi envycontrol nvidia-470xx-utils nvidia-470xx-dkms vkbasalt lib32-vkbasalt)
+PKGS=(
+    paru qt-sudo octopi envycontrol
+    nvidia-470xx-utils nvidia-470xx-dkms
+    vkbasalt lib32-vkbasalt
+    iir1 munt dosbox-staging dxvk-bin heroic-games-launcher-bin
+    fvs2 python-fvs python-setuptools-reproducible patool
+    python-steamgriddb vkbasalt-cli python-pathvalidate bottles
+)
 
 IS_ROOT=0; [[ "${EUID:-$(id -u)}" -eq 0 ]] && IS_ROOT=1
 

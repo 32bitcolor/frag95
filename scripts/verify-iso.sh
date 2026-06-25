@@ -90,6 +90,21 @@ pkg lib32-vkbasalt; check "Gaming: lib32-vkbasalt installed (from [frag95])" $?
 compgen -G "$R/var/lib/frag95-repo/vkbasalt-*.pkg.tar.*"       >/dev/null; check "[frag95] contains vkbasalt" $?
 compgen -G "$R/var/lib/frag95-repo/lib32-vkbasalt-*.pkg.tar.*" >/dev/null; check "[frag95] contains lib32-vkbasalt" $?
 
+echo "----- Phase 4: old-PC-games layer -----"
+pkg scummvm;        check "Retro: scummvm installed" $?
+pkg wine-staging;   check "Retro: wine-staging installed" $?
+pkg winetricks;     check "Retro: winetricks installed" $?
+pkg lutris;         check "Retro: lutris installed" $?
+pkg innoextract;    check "Retro: innoextract installed" $?
+pkg cabextract;     check "Retro: cabextract installed" $?
+pkg vkd3d;          check "Retro: vkd3d installed" $?
+pkg dosbox-staging; check "Retro: dosbox-staging installed (from [frag95])" $?
+pkg dxvk-bin;       check "Retro: dxvk-bin installed (from [frag95])" $?
+pkg heroic-games-launcher-bin; check "Retro: heroic-games-launcher-bin installed (from [frag95])" $?
+pkg bottles;        check "Retro: bottles installed (from [frag95])" $?
+compgen -G "$R/var/lib/frag95-repo/dosbox-staging-*.pkg.tar.*" >/dev/null; check "[frag95] contains dosbox-staging" $?
+compgen -G "$R/var/lib/frag95-repo/bottles-*.pkg.tar.*"        >/dev/null; check "[frag95] contains bottles" $?
+
 echo "==================="
 echo "PASS=$pass FAIL=$fail"
 [[ "$fail" == "0" ]] && echo "ALL GOOD" || echo "SOME CHECKS FAILED"

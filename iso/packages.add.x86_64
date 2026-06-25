@@ -109,3 +109,20 @@ goverlay
 vkbasalt
 lib32-vkbasalt
 ttf-liberation
+
+# --- Old-PC-games layer (Phase 4): DOS/Win9x/XP-era titles. DOSBox-Staging,
+#     ScummVM, Wine-staging + winetricks, Lutris, plus Bottles + Heroic
+#     launchers; innoextract/cabextract for GOG/old installers; DXVK + vkd3d for
+#     Wine/Lutris D3D. The AUR ones (dosbox-staging, dxvk-bin, heroic, bottles
+#     and their AUR deps) are prebuilt into the bundled [frag95] repo. ---
+scummvm
+wine-staging
+winetricks
+lutris
+innoextract
+cabextract
+vkd3d
+dosbox-staging
+dxvk-bin
+heroic-games-launcher-bin
+bottles
