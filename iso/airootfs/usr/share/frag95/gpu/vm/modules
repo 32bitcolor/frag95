@@ -1,0 +1,4 @@
+# Virtio is the common case (QEMU/KVM, Proxmox). The installer swaps in the right
+# one by hypervisor: qxl (SPICE), vmwgfx (VMware), vboxvideo (VirtualBox),
+# bochs/virtio_gpu (generic/Hyper-V).
+virtio_gpu

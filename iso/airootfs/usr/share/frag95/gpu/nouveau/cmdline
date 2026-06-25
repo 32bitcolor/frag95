@@ -1,0 +1,4 @@
+# Nouveau (open-source) needs no extra kernel parameters; early KMS via the
+# MODULES entry is enough. No proprietary package is installed for this choice
+# (the nouveau driver ships in mesa + the kernel), so there is no `pkgs` file —
+# the installer instead REMOVES any nvidia-*-dkms package from the target.

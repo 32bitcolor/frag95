@@ -1,0 +1,3 @@
+# AMD amdgpu needs no extra kernel parameters for modern GPUs; early KMS via the
+# MODULES entry is enough. (Very old GCN cards may want amdgpu.si_support=1 /
+# amdgpu.cik_support=1 — left out by default.)

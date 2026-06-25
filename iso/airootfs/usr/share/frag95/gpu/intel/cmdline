@@ -1,0 +1,2 @@
+# Intel iGPU (i915, in-kernel) needs no extra kernel parameters; early KMS via
+# the MODULES entry is enough. intel-media-driver provides VA-API (Gen8+).

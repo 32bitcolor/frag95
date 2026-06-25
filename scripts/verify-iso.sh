@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 #
 # Correct-by-construction check of a built Frag95 ISO: extract the rootfs
-# squashfs and confirm our Phase 1 customizations actually landed.
+# squashfs + package manifest and confirm our customizations actually landed
+# (Phase 1 live system; Phase 2 GPU driver stacks + profiles).
 #
 set -uo pipefail
 
@@ -18,7 +19,11 @@ rm -rf /tmp/r
 unsquashfs -n -f -d /tmp/r /tmp/a.sfs \
     etc/passwd etc/shadow \
     etc/sddm.conf.d etc/sudoers.d etc/xdg/kscreenlockerrc \
-    etc/systemd/system usr/share/xsessions >/dev/null 2>&1
+    etc/systemd/system usr/share/xsessions usr/share/frag95 >/dev/null 2>&1
+
+echo "==> Extracting package manifest"
+osirrox -indev "$ISO" -extract /frag95/pkglist.x86_64.txt /tmp/pkglist >/dev/null 2>&1
+pkg() { grep -qE "^$1 " /tmp/pkglist; }   # pkglist.x86_64.txt lines are "name version"
 
 R=/tmp/r
 pass=0; fail=0
@@ -39,6 +44,26 @@ grep -q 'Autolock=false' "$R/etc/xdg/kscreenlockerrc"; check "screen lock disabl
 [[ "$(readlink "$R/etc/systemd/system/display-manager.service")" == *sddm.service ]]; check "display-manager -> sddm.service" $?
 [[ "$(readlink "$R/etc/systemd/system/systemd-networkd.service")" == /dev/null ]]; check "systemd-networkd masked" $?
 [[ -L "$R/etc/systemd/system/multi-user.target.wants/NetworkManager.service" ]]; check "NetworkManager enabled" $?
+
+echo "----- Phase 2: GPU drivers + profiles -----"
+pkg nvidia-open-dkms;        check "NVIDIA: nvidia-open-dkms installed" $?
+pkg nvidia-utils;            check "NVIDIA: nvidia-utils installed" $?
+pkg lib32-nvidia-utils;      check "NVIDIA: lib32-nvidia-utils (multilib) installed" $?
+pkg vulkan-radeon;           check "AMD: vulkan-radeon installed" $?
+pkg lib32-vulkan-radeon;     check "AMD: lib32-vulkan-radeon installed" $?
+pkg vulkan-intel;            check "Intel: vulkan-intel installed" $?
+pkg mesa;                    check "Shared: mesa installed" $?
+pkg lib32-mesa;              check "Shared: lib32-mesa installed" $?
+pkg vulkan-icd-loader;       check "Shared: vulkan-icd-loader installed" $?
+pkg linux-headers;           check "DKMS: linux-headers (mainline) installed" $?
+pkg switcheroo-control;      check "Hybrid: switcheroo-control installed" $?
+G="$R/usr/share/frag95/gpu"
+[[ -f "$G/README.md" ]];                            check "GPU profiles shipped (README.md)" $?
+[[ -x "$G/auto/detect.sh" ]];                       check "GPU auto-detect script present + executable" $?
+[[ "$(cat "$G/nvidia/pkgs" 2>/dev/null)" == nvidia-open-dkms ]];        check "NVIDIA (open) profile -> nvidia-open-dkms" $?
+[[ "$(cat "$G/nvidia-legacy/pkgs" 2>/dev/null)" == nvidia-470xx-dkms ]]; check "NVIDIA (legacy) profile -> nvidia-470xx-dkms" $?
+[[ -f "$G/nouveau/modules" ]];                      check "nouveau (open-source) profile present" $?
+[[ -f "$G/amd/modules" && -f "$G/intel/modules" && -f "$G/hybrid/modules" && -f "$G/vm/modules" ]]; check "amd/intel/hybrid/vm profiles present" $?
 
 echo "==================="
 echo "PASS=$pass FAIL=$fail"

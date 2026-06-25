@@ -1,0 +1,4 @@
+# VMs need no special GPU kernel parameters; Mesa + the virtio/QXL KMS module
+# (see ./modules) handle modesetting. The installer enables the matching guest
+# agent (qemu-guest-agent / spice-vdagent / open-vm-tools / virtualbox-guest-utils)
+# based on systemd-detect-virt.

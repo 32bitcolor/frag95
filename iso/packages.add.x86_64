@@ -1,13 +1,17 @@
-# Frag95 Phase 1 package additions (appended to releng's live-boot packages).
-# Goal: minimal bootable base + KDE Plasma (X11 default) + autologin live user.
-# Later phases add: NVIDIA/AMD drivers, gaming stack, retro-games, theming,
-# Calamares, AUR (paru/octopi), sensors/thermal — see docs/PLAN.md.
+# Frag95 package additions (appended to releng's live-boot packages).
+# Phase 1: minimal bootable base + KDE Plasma (X11 default) + autologin live user.
+# Phase 2: NVIDIA/AMD/Intel GPU stacks (live ISO ships all; installer picks one).
+# Later phases add: gaming stack, retro-games, theming, Calamares, AUR
+# (paru/octopi via the [frag95] local repo), sensors/thermal — see docs/PLAN.md.
 
 # --- CPU microcode (both, for universal hardware support) ---
 intel-ucode
 amd-ucode
 
 # --- Kernels: mainline + LTS fallback for broad hardware compatibility ---
+# linux (mainline) comes from releng; we add its headers so nvidia-open-dkms
+# can build against BOTH kernels.
+linux-headers
 linux-lts
 linux-lts-headers
 
@@ -15,6 +19,38 @@ linux-lts-headers
 xorg-server
 xorg-xinit
 xorg-xrandr
+
+# --- GPU drivers (Phase 2): ship ALL stacks so the live ISO boots on any GPU.
+#     The live image stays vendor-agnostic (open/modesetting); the Phase 6
+#     installer applies the chosen early-KMS/proprietary profile to the
+#     installed system — see /usr/share/frag95/gpu/.
+# NVIDIA (open-kernel-module flavor, default for Turing+; DKMS rebuilds across
+# kernel updates — needs the headers above):
+nvidia-open-dkms
+nvidia-utils
+lib32-nvidia-utils
+nvidia-settings
+opencl-nvidia
+egl-wayland
+libva-nvidia-driver
+# AMD (amdgpu is in-kernel; this is the userspace Vulkan stack). The VA-API/
+# VDPAU gallium drivers are now bundled into `mesa` (below) — it Provides
+# libva-mesa-driver; the standalone libva-mesa-driver/mesa-vdpau packages were
+# dropped upstream.
+vulkan-radeon
+lib32-vulkan-radeon
+# Shared Mesa + Intel (iGPU, fallback, and Optimus render offload):
+mesa
+lib32-mesa
+vulkan-icd-loader
+lib32-vulkan-icd-loader
+vulkan-mesa-layers
+vulkan-intel
+lib32-vulkan-intel
+intel-media-driver
+# Hybrid/Optimus GPU switching (switcheroo-control is D-Bus activated; Plasma's
+# "Run with dedicated GPU" uses it. envycontrol comes via the AUR repo in 2b):
+switcheroo-control
 
 # --- KDE Plasma (minimal desktop for Phase 1) ---
 plasma-desktop
