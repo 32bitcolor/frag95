@@ -15,4 +15,7 @@ REPO="${REPO:-/repo}"
 echo "==> Refreshing builder packages (archiso etc.)"
 pacman -Syu --noconfirm --needed archiso rsync >/dev/null
 
+echo "==> Building the bundled [frag95] AUR repo (paru/octopi/...)"
+"$REPO/scripts/build-localrepo.sh"
+
 exec "$REPO/scripts/assemble-iso.sh"

@@ -74,6 +74,10 @@ build_native() {
     fi
     local sudo="" work="${TMPDIR:-/tmp}/frag95-work"
     [[ "$(id -u)" -ne 0 ]] && sudo="sudo"
+    # Build the [frag95] AUR repo first, as the (non-root) invoking user — makepkg
+    # refuses to run as root. Then assemble the ISO (mkarchiso needs root).
+    echo "==> Building the bundled [frag95] AUR repo (paru/octopi/...)"
+    REPO="$REPO" "$REPO/scripts/build-localrepo.sh"
     echo "==> Native build with host mkarchiso (work dir: $work)"
     $sudo env REPO="$REPO" WORK="$work" OUT="$REPO/out" "$REPO/scripts/assemble-iso.sh"
     # mkarchiso ran as root; hand the outputs back to the invoking user.

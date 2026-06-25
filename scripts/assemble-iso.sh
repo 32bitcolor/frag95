@@ -42,9 +42,13 @@ mkdir -p "$PROFILE" "$OUT"
 cp -a "$RELENG/." "$PROFILE/"
 
 echo "==> Applying Frag95 overrides"
-# Replace upstream profiledef + pacman.conf with ours.
+# Replace upstream profiledef + pacman.conf with ours (used by pacstrap)...
 install -m 0755 "$REPO/iso/profiledef.sh" "$PROFILE/profiledef.sh"
 install -m 0644 "$REPO/iso/pacman.conf"   "$PROFILE/pacman.conf"
+# ...and ship the same pacman.conf to the LIVE system, so multilib + the
+# [frag95] repo are enabled there too (pacstrap's default /etc/pacman.conf
+# would otherwise leave them off on the installed live image).
+install -D -m 0644 "$REPO/iso/pacman.conf" "$PROFILE/airootfs/etc/pacman.conf"
 
 # Append our package additions to releng's required live-boot package list.
 echo "" >> "$PROFILE/packages.x86_64"
@@ -66,6 +70,23 @@ ln -sf /usr/lib/systemd/system/NetworkManager.service \
     "$AIR/etc/systemd/system/multi-user.target.wants/NetworkManager.service"
 ln -sf /dev/null "$AIR/etc/systemd/system/systemd-networkd.service"
 ln -sf /dev/null "$AIR/etc/systemd/system/systemd-networkd.socket"
+
+# Expose the bundled [frag95] repo to pacstrap. Our pacman.conf points [frag95]
+# at file:///var/lib/frag95-repo (the path on the live system); make that same
+# path resolve on the build host so pacstrap can install paru/octopi from it.
+# build-localrepo.sh populates iso/airootfs/var/lib/frag95-repo beforehand; if
+# it's empty we still create an empty db so the enabled repo can't break pacstrap.
+FRAG_REPO_SRC="$REPO/iso/airootfs/var/lib/frag95-repo"
+echo "==> Exposing [frag95] local repo for pacstrap"
+mkdir -p /var/lib/frag95-repo
+if [[ -e "$FRAG_REPO_SRC/frag95.db" ]]; then
+    cp -af "$FRAG_REPO_SRC/." /var/lib/frag95-repo/
+    echo "    $(find "$FRAG_REPO_SRC" -name '*.pkg.tar.*' | wc -l | tr -d ' ') package file(s) from $FRAG_REPO_SRC"
+else
+    echo "    WARNING: no built repo at $FRAG_REPO_SRC — creating an empty db." >&2
+    echo "    Run scripts/build-localrepo.sh first to populate paru/octopi/etc." >&2
+    ( cd /var/lib/frag95-repo && repo-add frag95.db.tar.gz >/dev/null 2>&1 || true )
+fi
 
 echo "==> Building ISO with mkarchiso"
 mkarchiso -v -w "$WORK/tmp" -o "$OUT" "$PROFILE"

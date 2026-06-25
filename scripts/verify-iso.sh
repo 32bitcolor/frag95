@@ -19,7 +19,8 @@ rm -rf /tmp/r
 unsquashfs -n -f -d /tmp/r /tmp/a.sfs \
     etc/passwd etc/shadow \
     etc/sddm.conf.d etc/sudoers.d etc/xdg/kscreenlockerrc \
-    etc/systemd/system usr/share/xsessions usr/share/frag95 >/dev/null 2>&1
+    etc/systemd/system usr/share/xsessions usr/share/frag95 \
+    etc/pacman.conf var/lib/frag95-repo >/dev/null 2>&1
 
 echo "==> Extracting package manifest"
 osirrox -indev "$ISO" -extract /frag95/pkglist.x86_64.txt /tmp/pkglist >/dev/null 2>&1
@@ -64,6 +65,15 @@ G="$R/usr/share/frag95/gpu"
 [[ "$(cat "$G/nvidia-legacy/pkgs" 2>/dev/null)" == nvidia-470xx-dkms ]]; check "NVIDIA (legacy) profile -> nvidia-470xx-dkms" $?
 [[ -f "$G/nouveau/modules" ]];                      check "nouveau (open-source) profile present" $?
 [[ -f "$G/amd/modules" && -f "$G/intel/modules" && -f "$G/hybrid/modules" && -f "$G/vm/modules" ]]; check "amd/intel/hybrid/vm profiles present" $?
+
+echo "----- Phase 2b: AUR out of the box -----"
+pkg paru;   check "AUR: paru pre-installed" $?
+pkg octopi; check "AUR: octopi pre-installed" $?
+grep -q '^\[frag95\]'  "$R/etc/pacman.conf"; check "live /etc/pacman.conf has [frag95] repo" $?
+grep -q '^\[multilib\]' "$R/etc/pacman.conf"; check "live /etc/pacman.conf has [multilib]" $?
+[[ -e "$R/var/lib/frag95-repo/frag95.db" ]]; check "[frag95] repo db shipped on live image" $?
+compgen -G "$R/var/lib/frag95-repo/paru-*.pkg.tar.*"   >/dev/null; check "[frag95] contains the paru package" $?
+compgen -G "$R/var/lib/frag95-repo/octopi-*.pkg.tar.*" >/dev/null; check "[frag95] contains the octopi package" $?
 
 echo "==================="
 echo "PASS=$pass FAIL=$fail"

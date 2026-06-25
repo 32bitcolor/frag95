@@ -86,3 +86,10 @@ git
 nano
 vim
 firefox
+
+# --- AUR out of the box (Phase 2b): paru (CLI helper) + octopi (GUI browser)
+#     are prebuilt into the bundled [frag95] repo (scripts/build-localrepo.sh)
+#     and pre-installed here; base-devel makes makepkg/AUR work immediately. ---
+base-devel
+paru
+octopi
