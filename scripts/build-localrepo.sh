@@ -25,14 +25,19 @@ REFRESH="${REFRESH_AUR:-0}"
 
 # Ordered AUR build list. These have no AUR dependencies, so a plain
 # `makepkg -s` (which pulls official deps) is enough. The legacy NVIDIA 470xx
-# stack — which DOES need inter-AUR dep ordering — is added separately.
-#   paru        AUR helper (CLI)            -> pre-installed on the live image
-#   qt-sudo     octopi runtime dep (AUR)    -> pulled in as an octopi dependency
-#   octopi      AUR/pacman GUI browser      -> pre-installed on the live image
-#   envycontrol hybrid-GPU switcher         -> installed by the Phase 6 hybrid profile
-# (qt-sudo has only official deps, so plain makepkg still works; it must be in
-#  the repo because octopi depends on it and pacstrap resolves it from [frag95].)
-PKGS=(paru qt-sudo octopi envycontrol)
+# stack uses --nodeps for the -dkms package (see below).
+#   paru                AUR helper (CLI)         -> pre-installed on the live image
+#   qt-sudo             octopi runtime dep (AUR)  -> pulled in as an octopi dependency
+#   octopi              AUR/pacman GUI browser    -> pre-installed on the live image
+#   envycontrol         hybrid-GPU switcher       -> installed by the Phase 6 hybrid profile
+#   nvidia-470xx-utils  legacy NVIDIA userspace   -> installed by the nvidia-legacy profile
+#   nvidia-470xx-dkms   legacy NVIDIA kmod source -> installed by the nvidia-legacy profile
+# (qt-sudo / nvidia-470xx-utils have only official deps. nvidia-470xx-dkms
+#  depends on nvidia-470xx-utils, but only at *runtime* — packaging the DKMS
+#  source needs nothing installed — so it's built with makepkg --nodeps and the
+#  runtime dep is satisfied from [frag95] when the installer pulls it onto the
+#  target. That avoids having to install one AUR package to build the next.)
+PKGS=(paru qt-sudo octopi envycontrol nvidia-470xx-utils nvidia-470xx-dkms)
 
 IS_ROOT=0; [[ "${EUID:-$(id -u)}" -eq 0 ]] && IS_ROOT=1
 
@@ -65,13 +70,18 @@ for pkg in "${PKGS[@]}"; do
     if [[ "$REFRESH" != 1 ]] && compgen -G "$REPODIR/${pkg}-*.pkg.tar.*" >/dev/null; then
         echo "  [cached] $pkg"; cached=$((cached + 1)); continue
     fi
-    echo "  [build]  $pkg (cloning + makepkg from the AUR)"
+    # -dkms packages only bundle kernel-module source, so they don't need their
+    # (AUR) runtime deps installed to build — use --nodeps. Everything else pulls
+    # official build deps via --syncdeps.
+    mkflags="--syncdeps --needed"
+    case "$pkg" in *-dkms) mkflags="--nodeps" ;; esac
+    echo "  [build]  $pkg (cloning + makepkg $mkflags from the AUR)"
     run_as "
         cd '$WORK'
         rm -rf '$pkg'
         git clone --depth 1 'https://aur.archlinux.org/${pkg}.git'
         cd '$pkg'
-        makepkg --syncdeps --noconfirm --needed --clean
+        makepkg $mkflags --noconfirm --clean
     "
     # Split PKGBUILDs (e.g. octopi) emit several package files — keep them all,
     # except the -debug symbol packages.

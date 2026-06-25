@@ -74,6 +74,8 @@ grep -q '^\[multilib\]' "$R/etc/pacman.conf"; check "live /etc/pacman.conf has [
 [[ -e "$R/var/lib/frag95-repo/frag95.db" ]]; check "[frag95] repo db shipped on live image" $?
 compgen -G "$R/var/lib/frag95-repo/paru-*.pkg.tar.*"   >/dev/null; check "[frag95] contains the paru package" $?
 compgen -G "$R/var/lib/frag95-repo/octopi-*.pkg.tar.*" >/dev/null; check "[frag95] contains the octopi package" $?
+compgen -G "$R/var/lib/frag95-repo/nvidia-470xx-utils-*.pkg.tar.*" >/dev/null; check "[frag95] contains nvidia-470xx-utils (legacy)" $?
+compgen -G "$R/var/lib/frag95-repo/nvidia-470xx-dkms-*.pkg.tar.*"  >/dev/null; check "[frag95] contains nvidia-470xx-dkms (legacy)" $?
 
 echo "==================="
 echo "PASS=$pass FAIL=$fail"
