@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Install Frag95
+GenericName=System Installer
+Comment=Install Frag95 to your hard drive
+Icon=calamares
+Exec=pkexec calamares
+Terminal=false
+StartupNotify=true
+Categories=Qt;System;
+Keywords=calamares;installer;system;

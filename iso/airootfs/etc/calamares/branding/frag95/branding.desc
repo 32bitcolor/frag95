@@ -1,0 +1,33 @@
+---
+componentName: frag95
+
+welcomeStyleCalamares: false
+welcomeExpandingLogo: true
+windowExpanding: normal
+windowSize: 800px,520px
+windowPlacement: center
+
+strings:
+    productName:         Frag95
+    shortProductName:    Frag95
+    version:             1.0
+    shortVersion:        1.0
+    versionedName:       Frag95 1.0
+    shortVersionedName:  Frag95 1.0
+    bootloaderEntryName: Frag95
+    productUrl:          https://github.com/32bitcolor/frag95
+    supportUrl:          https://github.com/32bitcolor/frag95/issues
+    releaseNotesUrl:     https://github.com/32bitcolor/frag95
+
+images:
+    productLogo:    "frag95-logo.png"
+    productIcon:    "frag95-logo.png"
+
+slideshow: "show.qml"
+
+# Windows 9x palette for the installer sidebar (navy + silver).
+style:
+    sidebarBackground:    "#000080"
+    sidebarText:          "#FFFFFF"
+    sidebarTextSelect:    "#000080"
+    sidebarBackgroundSelect: "#C0C0C0"

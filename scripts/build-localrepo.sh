@@ -55,6 +55,7 @@ PKGS=(
     iir1 munt dosbox-staging dxvk-bin heroic-games-launcher-bin
     fvs2 python-fvs python-setuptools-reproducible patool
     python-steamgriddb vkbasalt-cli python-pathvalidate bottles
+    ckbcomp calamares
 )
 
 IS_ROOT=0; [[ "${EUID:-$(id -u)}" -eq 0 ]] && IS_ROOT=1

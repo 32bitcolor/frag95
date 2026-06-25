@@ -22,7 +22,8 @@ unsquashfs -n -f -d /tmp/r /tmp/a.sfs \
     etc/systemd/system usr/share/xsessions usr/share/frag95 \
     etc/pacman.conf var/lib/frag95-repo \
     etc/skel usr/share/color-schemes usr/share/plasma/look-and-feel \
-    usr/local/bin usr/share/sddm/themes/breeze >/dev/null 2>&1
+    usr/local/bin usr/share/sddm/themes/breeze \
+    etc/calamares usr/share/applications >/dev/null 2>&1
 
 echo "==> Extracting package manifest"
 osirrox -indev "$ISO" -extract /frag95/pkglist.x86_64.txt /tmp/pkglist >/dev/null 2>&1
@@ -38,8 +39,8 @@ check() { # desc, test-expr already evaluated -> $1 desc, $2 result(0/1)
 echo "===== RESULTS ====="
 grep -qE '^frag:x:1000:' "$R/etc/passwd"; check "live user 'frag' (uid 1000) exists" $?
 grep -qE '^frag:' "$R/etc/shadow"; check "frag has a shadow entry" $?
-grep -q 'User=frag' "$R/etc/sddm.conf.d/10-frag95.conf"; check "SDDM autologin user=frag" $?
-grep -q 'Session=plasmax11' "$R/etc/sddm.conf.d/10-frag95.conf"; check "SDDM session=plasmax11 (X11 default)" $?
+grep -q 'User=frag' "$R/etc/sddm.conf.d/20-frag95-autologin.conf"; check "SDDM autologin user=frag" $?
+grep -q 'Session=plasmax11' "$R/etc/sddm.conf.d/20-frag95-autologin.conf"; check "SDDM session=plasmax11 (X11 default)" $?
 [[ -f "$R/usr/share/xsessions/plasmax11.desktop" ]]; check "plasmax11.desktop session file present" $?
 grep -q '%wheel.*NOPASSWD' "$R/etc/sudoers.d/10-wheel-nopasswd"; check "passwordless wheel sudo" $?
 grep -q 'Autolock=false' "$R/etc/xdg/kscreenlockerrc"; check "screen lock disabled" $?
@@ -120,6 +121,22 @@ grep -q 'LookAndFeelPackage=org.frag95.redmond' "$R/etc/skel/.config/kdeglobals"
 [[ -x "$R/usr/local/bin/frag95-firstrun.sh" ]];             check "first-run theme script present + executable" $?
 [[ -f "$R/etc/skel/.config/autostart/frag95-firstrun.desktop" ]]; check "first-run autostart present in skel" $?
 grep -q '008080' "$R/usr/share/sddm/themes/breeze/theme.conf.user" 2>/dev/null; check "SDDM greeter recolored teal" $?
+
+echo "----- Phase 6: Calamares installer -----"
+pkg calamares;             check "Installer: calamares installed (from [frag95])" $?
+pkg arch-install-scripts;  check "Installer: arch-install-scripts installed" $?
+pkg grub;                  check "Installer: grub installed" $?
+pkg efibootmgr;            check "Installer: efibootmgr installed" $?
+CAL="$R/etc/calamares"
+[[ -f "$CAL/settings.conf" ]];                       check "calamares settings.conf shipped" $?
+[[ -f "$CAL/branding/frag95/branding.desc" ]];       check "calamares Frag95 branding shipped" $?
+[[ -f "$CAL/modules/unpackfs.conf" ]];               check "calamares unpackfs config shipped" $?
+[[ -f "$CAL/modules/bootloader.conf" ]];             check "calamares bootloader config shipped" $?
+grep -q 'initcpio' "$CAL/settings.conf" 2>/dev/null && ! grep -q 'mkinitcpio' "$CAL/settings.conf"; check "sequence uses the initcpio module (not mkinitcpio)" $?
+[[ -x "$R/usr/local/bin/frag95-apply-gpu.sh" ]];     check "GPU-apply script present + executable" $?
+[[ -x "$R/usr/local/bin/frag95-cleanup-install.sh" ]]; check "install-cleanup script present + executable" $?
+[[ -f "$R/usr/share/applications/install-frag95.desktop" ]]; check "installer launcher shipped" $?
+compgen -G "$R/var/lib/frag95-repo/calamares-*.pkg.tar.*" >/dev/null; check "[frag95] contains calamares" $?
 
 echo "==================="
 echo "PASS=$pass FAIL=$fail"
