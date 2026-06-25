@@ -16,24 +16,40 @@ A 90s-aesthetic, gaming-first Linux distribution built on Arch Linux.
 
 See the full plan in `docs/PLAN.md` (mirror of the approved design).
 
-## Building (on Windows, via Docker)
+## Building (any OS)
 
-Requires Docker Desktop (WSL2 backend) running. The ISO is built inside a privileged
-`archlinux` container running `mkarchiso` — no Arch install needed on the host.
+The ISO builds on **Linux, macOS, or Windows**. By default it builds inside a
+privileged `archlinux` container running `mkarchiso`, so **no Arch install is
+needed on the host** — you only need a container runtime (Docker or Podman).
+Output ISO lands in `out/`.
+
+```bash
+# Linux / macOS / WSL / Git Bash:
+./build.sh                 # build the ISO (auto-picks an engine)
+./build.sh --rebuild       # force-rebuild the container builder image
+./build.sh --test          # after building, run the QEMU boot smoke test
+./build.sh --engine native # build directly with the host's mkarchiso (Arch only)
+./build.sh --help
+```
 
 ```powershell
-# Build the builder image (first time only) and produce the ISO:
+# Native Windows PowerShell (equivalent wrapper, Docker Desktop with WSL2):
 .\build.ps1
-
-# Output ISO lands in .\out\
+.\build.ps1 -Rebuild
+.\build.ps1 -Test
 ```
 
-Optional flags:
+**Engines.** `build.sh` auto-selects:
 
-```powershell
-.\build.ps1 -Rebuild   # force-rebuild the Docker builder image
-.\build.ps1 -Test      # after building, run the QEMU boot smoke test
-```
+- **container** (default, universal) — builds in a privileged Docker/Podman
+  `archlinux` container. Works anywhere a container runtime runs. On macOS and
+  Windows this is the VM-backed Docker Desktop / Podman machine.
+- **native** (`--engine native`) — no container; runs `mkarchiso` under `sudo`
+  directly on an **Arch-based host** that has the `archiso` package. Fastest,
+  and the right choice if you're already on Arch.
+
+Both engines run the same OS-agnostic core (`scripts/assemble-iso.sh`) and
+produce identical ISOs.
 
 ## How the build works
 
@@ -48,7 +64,8 @@ We don't hand-maintain a full archiso profile. Instead:
 3. It enables our services (SDDM, NetworkManager, graphical target) via systemd symlinks.
 4. It runs `mkarchiso` to produce the ISO.
 
-See `scripts/build-in-container.sh`.
+See `scripts/assemble-iso.sh` (the OS-agnostic build core; `scripts/build-in-container.sh`
+is the thin container wrapper around it).
 
 ## Flashing to USB
 

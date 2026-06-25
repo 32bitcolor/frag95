@@ -4,8 +4,15 @@
     Build the Frag95 ISO inside a privileged Arch Linux Docker container.
 
 .DESCRIPTION
-    Builds (or reuses) the frag95-builder image, then runs mkarchiso in a
-    privileged container with loop-device access. Output ISO is written to .\out\.
+    Convenience wrapper for native-Windows PowerShell users. It builds (or
+    reuses) the frag95-builder image, then runs mkarchiso in a privileged
+    container with loop-device access. Output ISO is written to .\out\.
+
+    This is NOT the only way to build: build.sh is the cross-platform entrypoint
+    (Linux / macOS / WSL / Git Bash; docker or podman; plus a native no-container
+    path on Arch). build.ps1 and build.sh produce the same ISO via the same
+    container scripts. On Windows you can use either this script or, under WSL or
+    Git Bash, `./build.sh`.
 
 .PARAMETER Rebuild
     Force a rebuild of the frag95-builder Docker image.
@@ -48,6 +55,7 @@ Write-Host "==> Running mkarchiso (privileged container)..." -ForegroundColor Cy
     -v "${repo}:/repo" `
     -v "${repo}\out:/out" `
     -v "frag95-pacman-cache:/var/cache/pacman/pkg" `
+    -e REPO=/repo -e WORK=/work -e OUT=/out `
     $image `
     /repo/scripts/build-in-container.sh
 if ($LASTEXITCODE -ne 0) { throw "ISO build failed." }

@@ -17,7 +17,9 @@ A custom Linux distribution built on Arch Linux that:
 - Defaults to the **X11 Plasma session** (most compatible for Steam/Proton/overlays on NVIDIA); Wayland selectable.
 - **AUR works 100% out of the box** — `paru` (CLI) + `octopi` (GUI browser) pre-installed via a bundled local repo.
 
-Build host: **Docker Desktop (WSL2)** — ISO built in a privileged `archlinux` container running `mkarchiso`.
+Build host: **any OS** — `build.sh` builds the ISO in a privileged `archlinux` container
+(Docker or Podman; Linux/macOS/Windows) running `mkarchiso`, or natively on an Arch host
+(`--engine native`). `build.ps1` is a native-Windows PowerShell wrapper for the same.
 
 ### Key technical findings
 - Arch ships **`nvidia-open`** as default for Turing+ → use **`nvidia-open-dkms`** (rebuilds across `linux`/`linux-lts`).
@@ -27,8 +29,9 @@ Build host: **Docker Desktop (WSL2)** — ISO built in a privileged `archlinux` 
 
 ## How the build is structured
 
-We don't fork the whole releng profile into git. The build (`scripts/build-in-container.sh`) seeds
-the upstream `releng` profile, then overlays our deltas from `iso/`:
+We don't fork the whole releng profile into git. The build (`scripts/assemble-iso.sh`, run
+either in a container or natively — see README "Building") seeds the upstream `releng`
+profile, then overlays our deltas from `iso/`:
 - `profiledef.sh` + `pacman.conf` replace upstream.
 - `packages.add.x86_64` is **appended** to releng's package list.
 - `airootfs/` is **overlaid** additively.
