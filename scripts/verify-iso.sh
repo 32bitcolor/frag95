@@ -77,6 +77,19 @@ compgen -G "$R/var/lib/frag95-repo/octopi-*.pkg.tar.*" >/dev/null; check "[frag9
 compgen -G "$R/var/lib/frag95-repo/nvidia-470xx-utils-*.pkg.tar.*" >/dev/null; check "[frag95] contains nvidia-470xx-utils (legacy)" $?
 compgen -G "$R/var/lib/frag95-repo/nvidia-470xx-dkms-*.pkg.tar.*"  >/dev/null; check "[frag95] contains nvidia-470xx-dkms (legacy)" $?
 
+echo "----- Phase 3: gaming layer -----"
+pkg steam;          check "Gaming: steam installed" $?
+pkg gamemode;       check "Gaming: gamemode installed" $?
+pkg lib32-gamemode; check "Gaming: lib32-gamemode installed" $?
+pkg gamescope;      check "Gaming: gamescope installed" $?
+pkg mangohud;       check "Gaming: mangohud installed" $?
+pkg lib32-mangohud; check "Gaming: lib32-mangohud installed" $?
+pkg goverlay;       check "Gaming: goverlay installed" $?
+pkg vkbasalt;       check "Gaming: vkbasalt installed (from [frag95])" $?
+pkg lib32-vkbasalt; check "Gaming: lib32-vkbasalt installed (from [frag95])" $?
+compgen -G "$R/var/lib/frag95-repo/vkbasalt-*.pkg.tar.*"       >/dev/null; check "[frag95] contains vkbasalt" $?
+compgen -G "$R/var/lib/frag95-repo/lib32-vkbasalt-*.pkg.tar.*" >/dev/null; check "[frag95] contains lib32-vkbasalt" $?
+
 echo "==================="
 echo "PASS=$pass FAIL=$fail"
 [[ "$fail" == "0" ]] && echo "ALL GOOD" || echo "SOME CHECKS FAILED"

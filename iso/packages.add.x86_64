@@ -93,3 +93,19 @@ firefox
 base-devel
 paru
 octopi
+
+# --- Gaming layer (Phase 3): Steam (ships its own Proton + runtime), the
+#     gamemode performance daemon, in-game overlays (MangoHud, vkBasalt) with a
+#     GUI (goverlay), and the gamescope micro-compositor. The lib32 variants
+#     rely on the multilib + 32-bit GPU stacks from Phase 2. vkbasalt +
+#     lib32-vkbasalt are AUR, prebuilt into the bundled [frag95] repo. ---
+steam
+gamemode
+lib32-gamemode
+gamescope
+mangohud
+lib32-mangohud
+goverlay
+vkbasalt
+lib32-vkbasalt
+ttf-liberation
