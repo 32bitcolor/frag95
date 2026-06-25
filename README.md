@@ -75,8 +75,8 @@ or Rufus (DD mode). Boot in UEFI mode.
 ## Status
 
 Builds on Linux/macOS/Windows; the live ISO is validated each build by
-`scripts/verify-iso.sh` (currently **61/61** checks passing on a ~5 GB image).
-There is **no installer yet** — phases 1–4 produce a *live* ISO; the Calamares
+`scripts/verify-iso.sh` (currently **72/72** checks passing on a ~5 GB image).
+There is **no installer yet** — phases 1–5 produce a *live* ISO; the Calamares
 installer arrives in phase 6. See `docs/PLAN.md` for the full roadmap.
 
 | Phase | Scope | Status |
@@ -86,7 +86,7 @@ installer arrives in phase 6. See `docs/PLAN.md` for the full roadmap.
 | 2b | AUR out of the box — bundled `[frag95]` repo, `paru` + `octopi` pre-installed | ✅ Done |
 | 3  | Gaming layer — Steam, gamemode, gamescope, MangoHud, vkBasalt | ✅ Done |
 | 4  | Old-PC-games — DOSBox-Staging, ScummVM, Wine-staging, Lutris, Bottles, Heroic, DXVK | ✅ Done |
-| 5  | Windows 9x aesthetic — theme, fonts, cursors, wallpaper, SDDM, branding | ⬜ Planned |
+| 5  | Windows 9x aesthetic — color scheme, classic Start menu, teal desktop, fonts, SDDM | ✅ Done¹ |
 | 6  | Calamares installer — themed, with the GPU-choice page | ⬜ Planned |
 | 7  | Hardware tuning + polish — sensors/thermal, vendor profiles, release autom. | ⬜ Planned |
 
@@ -94,3 +94,8 @@ installer arrives in phase 6. See `docs/PLAN.md` for the full roadmap.
 vendor-agnostic. NVIDIA offers three install profiles — `nvidia-open-dkms` (the
 proprietary driver, Turing+), `nvidia-470xx` (legacy, pre-Turing), and `nouveau`
 (open-source) — plus AMD, Intel, hybrid/Optimus, and VM profiles.
+
+¹ The phase-5 theme is verified to *ship* correctly, but its visual result is
+confirmed on a real boot (phase 6+). Deferred refinements: an Aurorae Win9x
+titlebar, custom cursor/icon sets, a pixel MS-Sans font, and a Plymouth boot
+splash.

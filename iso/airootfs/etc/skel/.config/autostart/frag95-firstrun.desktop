@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Frag95 First-Run Theme
+Comment=Applies the Frag95 (Windows 9x) panel layout + wallpaper on first login
+Exec=/usr/local/bin/frag95-firstrun.sh
+X-KDE-autostart-phase=2
+OnlyShowIn=KDE;
+NoDisplay=true

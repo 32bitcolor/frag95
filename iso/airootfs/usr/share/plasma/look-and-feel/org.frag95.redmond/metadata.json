@@ -1,0 +1,15 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Name": "Frag95 Project"
+            }
+        ],
+        "Description": "Windows 9x desktop aesthetic: silver 3D chrome, navy titlebars, teal desktop, classic Start menu.",
+        "Id": "org.frag95.redmond",
+        "License": "GPL-3.0+",
+        "Name": "Frag95 (Windows 9x)",
+        "Version": "1.0"
+    },
+    "KPackageStructure": "Plasma/LookAndFeel"
+}

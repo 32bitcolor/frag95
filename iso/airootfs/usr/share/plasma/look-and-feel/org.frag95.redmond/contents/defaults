@@ -1,0 +1,32 @@
+[kdeglobals][KDE]
+widgetStyle=Breeze
+
+[kdeglobals][General]
+ColorScheme=Frag95
+TitlebarFont=Liberation Sans,10,-1,5,75,0,0,0,0,0,Bold
+font=Liberation Sans,10,-1,5,50,0,0,0,0,0
+menuFont=Liberation Sans,10,-1,5,50,0,0,0,0,0
+smallestReadableFont=Liberation Sans,8,-1,5,50,0,0,0,0,0
+toolBarFont=Liberation Sans,10,-1,5,50,0,0,0,0,0
+
+[kdeglobals][Icons]
+Theme=breeze
+
+[plasmarc][Theme]
+name=default
+
+[kwinrc][org.kde.kdecoration2]
+ButtonsOnLeft=MS
+ButtonsOnRight=IAX
+library=org.kde.breeze
+theme=Breeze
+
+[kwinrc][Windows]
+BorderlessMaximizedWindows=false
+
+[kdeglobals][KDE]
+AnimationDurationFactor=0
+
+[ksplashrc][KSplash]
+Engine=none
+Theme=None

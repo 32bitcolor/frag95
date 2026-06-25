@@ -1,0 +1,10 @@
+[org.kde.kdecoration2]
+# Win9x button arrangement: system-menu icon on the left; minimize, maximize,
+# close on the right. Square Breeze decoration (no rounded corners theme here).
+ButtonsOnLeft=M
+ButtonsOnRight=IAX
+library=org.kde.breeze
+theme=Breeze
+
+[Windows]
+BorderlessMaximizedWindows=false

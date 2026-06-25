@@ -20,7 +20,9 @@ unsquashfs -n -f -d /tmp/r /tmp/a.sfs \
     etc/passwd etc/shadow \
     etc/sddm.conf.d etc/sudoers.d etc/xdg/kscreenlockerrc \
     etc/systemd/system usr/share/xsessions usr/share/frag95 \
-    etc/pacman.conf var/lib/frag95-repo >/dev/null 2>&1
+    etc/pacman.conf var/lib/frag95-repo \
+    etc/skel usr/share/color-schemes usr/share/plasma/look-and-feel \
+    usr/local/bin usr/share/sddm/themes/breeze >/dev/null 2>&1
 
 echo "==> Extracting package manifest"
 osirrox -indev "$ISO" -extract /frag95/pkglist.x86_64.txt /tmp/pkglist >/dev/null 2>&1
@@ -104,6 +106,20 @@ pkg heroic-games-launcher-bin; check "Retro: heroic-games-launcher-bin installed
 pkg bottles;        check "Retro: bottles installed (from [frag95])" $?
 compgen -G "$R/var/lib/frag95-repo/dosbox-staging-*.pkg.tar.*" >/dev/null; check "[frag95] contains dosbox-staging" $?
 compgen -G "$R/var/lib/frag95-repo/bottles-*.pkg.tar.*"        >/dev/null; check "[frag95] contains bottles" $?
+
+echo "----- Phase 5: Windows 9x aesthetic -----"
+LNF="$R/usr/share/plasma/look-and-feel/org.frag95.redmond"
+[[ -f "$R/usr/share/color-schemes/Frag95.colors" ]];        check "Frag95 color scheme shipped" $?
+grep -q '0,0,128' "$R/usr/share/color-schemes/Frag95.colors" 2>/dev/null; check "color scheme has navy (9x) selection" $?
+[[ -f "$LNF/metadata.json" ]];                              check "look-and-feel package shipped" $?
+[[ -f "$LNF/contents/layouts/org.kde.plasma.desktop-layout.js" ]]; check "look-and-feel panel layout.js present" $?
+grep -q 'org.kde.plasma.kicker' "$LNF/contents/layouts/org.kde.plasma.desktop-layout.js" 2>/dev/null; check "layout uses classic Start menu (kicker)" $?
+grep -q '0,128,128' "$LNF/contents/layouts/org.kde.plasma.desktop-layout.js" 2>/dev/null; check "layout sets teal desktop" $?
+grep -q 'ColorScheme=Frag95' "$R/etc/skel/.config/kdeglobals" 2>/dev/null; check "skel kdeglobals selects Frag95 colors" $?
+grep -q 'LookAndFeelPackage=org.frag95.redmond' "$R/etc/skel/.config/kdeglobals" 2>/dev/null; check "skel kdeglobals selects the 9x global theme" $?
+[[ -x "$R/usr/local/bin/frag95-firstrun.sh" ]];             check "first-run theme script present + executable" $?
+[[ -f "$R/etc/skel/.config/autostart/frag95-firstrun.desktop" ]]; check "first-run autostart present in skel" $?
+grep -q '008080' "$R/usr/share/sddm/themes/breeze/theme.conf.user" 2>/dev/null; check "SDDM greeter recolored teal" $?
 
 echo "==================="
 echo "PASS=$pass FAIL=$fail"

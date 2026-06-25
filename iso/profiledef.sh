@@ -33,6 +33,7 @@ file_permissions=(
     ["/root"]="0:0:750"
     ["/root/customize_airootfs.sh"]="0:0:755"
     ["/usr/share/frag95/gpu/auto/detect.sh"]="0:0:755"
+    ["/usr/local/bin/frag95-firstrun.sh"]="0:0:755"
     ["/etc/sudoers.d/10-wheel-nopasswd"]="0:0:440"
     ["/usr/local/bin/"]="0:0:755"
 )
