@@ -148,6 +148,9 @@ grep -q 'QtVersion=6' "$R/usr/share/sddm/themes/frag95/metadata.desktop" 2>/dev/
 ! grep -qi 'SddmComponents' "$R/usr/share/sddm/themes/frag95/Main.qml" 2>/dev/null; check "SDDM greeter avoids Qt5-era SddmComponents" $?
 grep -q '^Current=frag95' "$R/etc/sddm.conf.d/10-frag95.conf" 2>/dev/null; check "sddm.conf.d selects the frag95 greeter" $?
 grep -q 'Current=frag95' "$R/etc/calamares/modules/shellprocess_cleanup.conf" 2>/dev/null; check "installer pins frag95 greeter in /etc/sddm.conf" $?
+[[ -f "$LNF/contents/logout/Logout.qml" ]];                check "Win9x logout greeter (Logout.qml) shipped" $?
+grep -q 'signal logoutRequested' "$LNF/contents/logout/Logout.qml" 2>/dev/null; check "logout greeter honors the greeter signal contract" $?
+grep -q 'ksplashrc' "$R/usr/local/bin/frag95-restore-theme.sh" 2>/dev/null; check "restore script disables the KDE splash" $?
 
 echo "----- Phase 6: Calamares installer -----"
 pkg calamares;             check "Installer: calamares installed (from [frag95])" $?
