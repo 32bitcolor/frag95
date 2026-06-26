@@ -22,7 +22,8 @@ unsquashfs -n -f -d /tmp/r /tmp/a.sfs \
     etc/systemd/system usr/share/xsessions usr/share/frag95 \
     etc/pacman.conf var/lib/frag95-repo \
     etc/skel usr/share/color-schemes usr/share/plasma/look-and-feel \
-    usr/local/bin usr/share/sddm/themes/breeze \
+    usr/local/bin usr/share/sddm/themes/breeze usr/share/sddm/themes/frag95 \
+    usr/share/sounds/frag95 usr/share/icons/Chicago95 \
     usr/share/aurorae usr/share/plasma/desktoptheme/reactplus \
     usr/share/themes/Chicago95 usr/share/icons/Chicago95_Standard_Cursors \
     etc/calamares usr/share/applications >/dev/null 2>&1
@@ -146,7 +147,7 @@ SNDN=$(ls "$R/usr/share/sounds/frag95/stereo/"*.oga 2>/dev/null | wc -l); [[ "$S
 grep -q 'gtk-sound-theme-name=frag95' "$SK/gtk-3.0/settings.ini" 2>/dev/null; check "GTK sound theme -> frag95 (libcanberra/KDE pick it up)" $?
 [[ -f "$R/usr/share/sddm/themes/frag95/Main.qml" ]];       check "Win9x SDDM greeter (Main.qml) shipped" $?
 grep -q 'QtVersion=6' "$R/usr/share/sddm/themes/frag95/metadata.desktop" 2>/dev/null; check "SDDM greeter declares Qt6 (avoids Qt5 black-screen)" $?
-! grep -qi 'SddmComponents' "$R/usr/share/sddm/themes/frag95/Main.qml" 2>/dev/null; check "SDDM greeter avoids Qt5-era SddmComponents" $?
+! grep -qiE '^[[:space:]]*import[[:space:]]+SddmComponents' "$R/usr/share/sddm/themes/frag95/Main.qml" 2>/dev/null; check "SDDM greeter avoids Qt5-era SddmComponents" $?
 grep -q '^Current=frag95' "$R/etc/sddm.conf.d/10-frag95.conf" 2>/dev/null; check "sddm.conf.d selects the frag95 greeter" $?
 grep -q 'Current=frag95' "$R/etc/calamares/modules/shellprocess_cleanup.conf" 2>/dev/null; check "installer pins frag95 greeter in /etc/sddm.conf" $?
 [[ -f "$LNF/contents/logout/Logout.qml" ]];                check "Win9x logout greeter (Logout.qml) shipped" $?
