@@ -27,7 +27,7 @@ slideshow: "show.qml"
 
 # Windows 9x palette for the installer sidebar (navy + silver).
 style:
-    sidebarBackground:    "#000080"
-    sidebarText:          "#FFFFFF"
-    sidebarTextSelect:    "#000080"
-    sidebarBackgroundSelect: "#C0C0C0"
+    SidebarBackground:        "#000080"
+    SidebarBackgroundCurrent: "#C0C0C0"
+    SidebarText:              "#FFFFFF"
+    SidebarTextCurrent:       "#000000"

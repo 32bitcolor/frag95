@@ -9,8 +9,22 @@ panel.height = Math.round(gridUnit * 1.6)
 panel.floating = false
 
 // Start menu — org.kde.plasma.kicker is the classic cascading Application Menu
-// (as opposed to the modern full-screen Kickoff).
-panel.addWidget("org.kde.plasma.kicker")
+// (as opposed to the modern full-screen Kickoff). Give it the Win95 "Start"
+// button image, and curate its favorites to installed apps (the Plasma default
+// favorites pin Discover etc., which aren't installed and error when clicked).
+var kicker = panel.addWidget("org.kde.plasma.kicker")
+kicker.currentConfigGroup = ["General"]
+kicker.writeConfig("useCustomButtonImage", true)
+kicker.writeConfig("customButtonImage", "/usr/share/frag95/start-button.png")
+kicker.writeConfig("favoritesPortedToKAstats", false)
+kicker.writeConfig("favorites", [
+    "applications:org.kde.dolphin.desktop",
+    "applications:firefox.desktop",
+    "applications:steam.desktop",
+    "applications:octopi.desktop",
+    "applications:org.kde.konsole.desktop",
+    "applications:systemsettings.desktop"
+].join(","))
 
 // "Show desktop" button next to Start, 9x-style.
 panel.addWidget("org.kde.plasma.showdesktop")

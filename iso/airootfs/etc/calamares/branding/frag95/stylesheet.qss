@@ -1,15 +1,31 @@
 /* Frag95 Calamares stylesheet.
  *
- * Calamares 3.4.x ignores the branding.desc "style:" keys (sidebarBackground
- * etc. warn as "Unknown branding *style* entry"), so the sidebar is styled
- * here instead — otherwise it falls back to a black background. Win9x look:
- * navy sidebar with white step text, matching the logo + window titlebars.
+ * Calamares 3.4.x dropped the branding.desc "style:" keys (they warn as
+ * "Unknown branding *style* entry") in favour of QSS. The sidebar is the
+ * #sidebarApp container holding a ProgressTreeView (the step list, drawn by a
+ * custom delegate) — without styling here the step list renders black. Win9x
+ * look: navy sidebar, white step text, silver highlight for the current step.
  */
 #sidebarApp {
     background-color: #000080;
 }
 
 #sidebarApp QLabel {
-    color: #ffffff;
     background-color: transparent;
+    color: #ffffff;
+}
+
+ProgressTreeView {
+    background-color: #000080;
+    color: #ffffff;
+}
+
+ProgressTreeView::item {
+    background-color: #000080;
+    color: #ffffff;
+}
+
+ProgressTreeView::item:selected {
+    background-color: #c0c0c0;
+    color: #000000;
 }

@@ -19,12 +19,16 @@ set -euo pipefail
 useradd -m -u 1000 -U -G wheel -s /usr/bin/bash -c "Frag95 Live User" frag
 passwd -l frag
 
-# Put the "Install Frag95" launcher on the live user's desktop. This is done
-# here (not via /etc/skel) so it stays live-only — installed users that
-# Calamares creates from /etc/skel don't get an installer icon.
+# Put the "Install Frag95" launcher on the live user's desktop AND in autostart
+# (so the installer pops up on boot). Both are done here — not via /etc/skel —
+# so they stay live-only: installed users that Calamares creates from /etc/skel
+# get neither an installer icon nor an auto-launching installer.
 if [ -f /usr/share/applications/install-frag95.desktop ]; then
-    install -d -o frag -g frag /home/frag/Desktop
+    install -d -o frag -g frag /home/frag/Desktop /home/frag/.config/autostart
     install -m 0755 -o frag -g frag \
         /usr/share/applications/install-frag95.desktop \
         /home/frag/Desktop/install-frag95.desktop
+    install -m 0644 -o frag -g frag \
+        /usr/share/applications/install-frag95.desktop \
+        /home/frag/.config/autostart/install-frag95.desktop
 fi
