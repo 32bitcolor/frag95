@@ -131,6 +131,12 @@ grep -q 'org.kde.plasma.kicker' "$LNF/contents/layouts/org.kde.plasma.desktop-la
 grep -q 'ColorScheme=Win98'  "$LNF/contents/defaults" 2>/dev/null; check "look-and-feel defaults -> Win98 + Win95 components" $?
 [[ -x "$R/usr/local/bin/frag95-firstrun.sh" ]];             check "first-run theme script present + executable" $?
 [[ -f "$SK/autostart/frag95-firstrun.desktop" ]];          check "first-run autostart present in skel" $?
+[[ -x "$R/usr/local/bin/frag95-restore-theme.sh" ]];       check "restore-theme script present + executable" $?
+grep -q 'DefaultDarkLookAndFeel' "$R/usr/local/bin/frag95-restore-theme.sh" 2>/dev/null; check "restore-theme pins dark slot (Dark Mode stays in-theme)" $?
+[[ -f "$R/usr/share/applications/frag95-restore-theme.desktop" ]]; check "Restore Frag95 Theme launcher shipped" $?
+[[ -x "$R/usr/local/bin/frag95-gpu-mode.sh" ]];            check "GPU-mode GUI script present + executable" $?
+grep -q 'TryExec=envycontrol' "$R/usr/share/applications/frag95-gpu-mode.desktop" 2>/dev/null; check "GPU-mode launcher hidden unless envycontrol present (hybrid only)" $?
+[[ -f "$R/usr/share/frag95/gpu/hybrid/pkgs" ]] && grep -q envycontrol "$R/usr/share/frag95/gpu/hybrid/pkgs"; check "hybrid profile pulls in envycontrol" $?
 
 echo "----- Phase 6: Calamares installer -----"
 pkg calamares;             check "Installer: calamares installed (from [frag95])" $?

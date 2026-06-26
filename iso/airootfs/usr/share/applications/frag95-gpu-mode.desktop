@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Frag95 GPU Mode
+GenericName=Switch Graphics Mode
+Comment=Switch a hybrid laptop between Intel, Hybrid, and NVIDIA GPU modes
+Exec=/usr/local/bin/frag95-gpu-mode.sh
+TryExec=envycontrol
+Icon=preferences-desktop-display
+Terminal=false
+Categories=Settings;HardwareSettings;Qt;KDE;
+Keywords=gpu;graphics;nvidia;intel;optimus;hybrid;switch;prime;envycontrol;
