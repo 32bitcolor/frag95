@@ -10,6 +10,19 @@
     background-color: #000080;
 }
 
+/* Enlarge the sidebar product logo. Calamares scales the pixmap to a small
+ * fixed size; qproperty-scaledContents makes the QLabel scale the pixmap to
+ * fill. The logo is square (256x256), so the label MUST be square too
+ * (equal min-width/min-height) or it stretches. */
+#logoApp {
+    qproperty-scaledContents: true;
+    min-width: 120px;
+    max-width: 120px;
+    min-height: 120px;
+    max-height: 120px;
+    margin: 14px;
+}
+
 #sidebarApp QLabel {
     background-color: transparent;
     color: #ffffff;
