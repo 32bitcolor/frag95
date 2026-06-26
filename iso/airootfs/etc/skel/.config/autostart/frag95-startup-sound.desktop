@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Frag95 Startup Sound
+Comment=Play the Frag95 startup chime on login
+Exec=/usr/local/bin/frag95-play-sound.sh desktop-login
+Icon=audio-volume-high
+Terminal=false
+X-KDE-autostart-phase=2
+OnlyShowIn=KDE;
+NoDisplay=true

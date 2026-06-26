@@ -137,6 +137,12 @@ grep -q 'DefaultDarkLookAndFeel' "$R/usr/local/bin/frag95-restore-theme.sh" 2>/d
 [[ -x "$R/usr/local/bin/frag95-gpu-mode.sh" ]];            check "GPU-mode GUI script present + executable" $?
 grep -q 'TryExec=envycontrol' "$R/usr/share/applications/frag95-gpu-mode.desktop" 2>/dev/null; check "GPU-mode launcher hidden unless envycontrol present (hybrid only)" $?
 [[ -f "$R/usr/share/frag95/gpu/hybrid/pkgs" ]] && grep -q envycontrol "$R/usr/share/frag95/gpu/hybrid/pkgs"; check "hybrid profile pulls in envycontrol" $?
+[[ -f "$R/usr/share/sounds/frag95/index.theme" ]];        check "Win9x sound theme shipped" $?
+[[ -f "$R/usr/share/sounds/frag95/stereo/desktop-login.oga" ]]; check "startup chime present in sound theme" $?
+SNDN=$(ls "$R/usr/share/sounds/frag95/stereo/"*.oga 2>/dev/null | wc -l); [[ "$SNDN" -ge 10 ]]; check "sound theme has the full event set (>=10 sounds)" $?
+[[ -x "$R/usr/local/bin/frag95-play-sound.sh" ]];          check "sound playback helper present + executable" $?
+[[ -f "$SK/autostart/frag95-startup-sound.desktop" ]];     check "startup-sound autostart present in skel" $?
+grep -q 'gtk-sound-theme-name=frag95' "$SK/gtk-3.0/settings.ini" 2>/dev/null; check "GTK sound theme -> frag95 (libcanberra/KDE pick it up)" $?
 
 echo "----- Phase 6: Calamares installer -----"
 pkg calamares;             check "Installer: calamares installed (from [frag95])" $?

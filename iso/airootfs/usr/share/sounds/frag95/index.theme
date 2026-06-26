@@ -1,0 +1,8 @@
+[Sound Theme]
+Name=Frag95
+Comment=Windows 9x-style system sounds (original, freely redistributable)
+Directories=stereo
+Inherits=freedesktop
+
+[stereo]
+OutputProfile=stereo
