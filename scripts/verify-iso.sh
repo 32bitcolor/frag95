@@ -143,6 +143,11 @@ SNDN=$(ls "$R/usr/share/sounds/frag95/stereo/"*.oga 2>/dev/null | wc -l); [[ "$S
 [[ -x "$R/usr/local/bin/frag95-play-sound.sh" ]];          check "sound playback helper present + executable" $?
 [[ -f "$SK/autostart/frag95-startup-sound.desktop" ]];     check "startup-sound autostart present in skel" $?
 grep -q 'gtk-sound-theme-name=frag95' "$SK/gtk-3.0/settings.ini" 2>/dev/null; check "GTK sound theme -> frag95 (libcanberra/KDE pick it up)" $?
+[[ -f "$R/usr/share/sddm/themes/frag95/Main.qml" ]];       check "Win9x SDDM greeter (Main.qml) shipped" $?
+grep -q 'QtVersion=6' "$R/usr/share/sddm/themes/frag95/metadata.desktop" 2>/dev/null; check "SDDM greeter declares Qt6 (avoids Qt5 black-screen)" $?
+! grep -qi 'SddmComponents' "$R/usr/share/sddm/themes/frag95/Main.qml" 2>/dev/null; check "SDDM greeter avoids Qt5-era SddmComponents" $?
+grep -q '^Current=frag95' "$R/etc/sddm.conf.d/10-frag95.conf" 2>/dev/null; check "sddm.conf.d selects the frag95 greeter" $?
+grep -q 'Current=frag95' "$R/etc/calamares/modules/shellprocess_cleanup.conf" 2>/dev/null; check "installer pins frag95 greeter in /etc/sddm.conf" $?
 
 echo "----- Phase 6: Calamares installer -----"
 pkg calamares;             check "Installer: calamares installed (from [frag95])" $?

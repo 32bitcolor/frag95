@@ -1,0 +1,10 @@
+[SddmGreeterTheme]
+Name=Frag95
+Description=Windows 9x style login for Frag95
+Author=Frag95 Project
+License=GPL-3.0
+Type=sddm-theme
+Version=1.0
+MainScript=Main.qml
+ConfigFile=theme.conf
+QtVersion=6
