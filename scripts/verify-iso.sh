@@ -159,6 +159,7 @@ pkg calamares;             check "Installer: calamares installed (from [frag95])
 pkg arch-install-scripts;  check "Installer: arch-install-scripts installed" $?
 pkg grub;                  check "Installer: grub installed" $?
 pkg efibootmgr;            check "Installer: efibootmgr installed" $?
+! pkg os-prober;           check "os-prober NOT shipped (keeps Erase-disk available)" $?
 CAL="$R/etc/calamares"
 [[ -f "$CAL/settings.conf" ]];                       check "calamares settings.conf shipped" $?
 [[ -f "$CAL/branding/frag95/branding.desc" ]];       check "calamares Frag95 branding shipped" $?

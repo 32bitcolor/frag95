@@ -134,7 +134,11 @@ ckbcomp
 arch-install-scripts
 grub
 efibootmgr
-os-prober
+# NOTE: os-prober is intentionally NOT shipped. During install it mounts every
+# partition on the target disk to detect other OSes, and Calamares hides the
+# "Erase disk" choice while any target partition is mounted -- so on a disk that
+# already has Windows, erase silently disappeared. frag95 is a wipe-to-install
+# distro (no dual-boot goal), so dropping os-prober keeps erase always available.
 
 # --- Windows 9x aesthetic (Phase 5): chicago95-theme-git (AUR, in [frag95])
 #     provides the Chicago95 icons (yellow folders), cursors, GTK theme + Win95
