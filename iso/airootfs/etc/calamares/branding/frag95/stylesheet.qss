@@ -1,0 +1,15 @@
+/* Frag95 Calamares stylesheet.
+ *
+ * Calamares 3.4.x ignores the branding.desc "style:" keys (sidebarBackground
+ * etc. warn as "Unknown branding *style* entry"), so the sidebar is styled
+ * here instead — otherwise it falls back to a black background. Win9x look:
+ * navy sidebar with white step text, matching the logo + window titlebars.
+ */
+#sidebarApp {
+    background-color: #000080;
+}
+
+#sidebarApp QLabel {
+    color: #ffffff;
+    background-color: transparent;
+}

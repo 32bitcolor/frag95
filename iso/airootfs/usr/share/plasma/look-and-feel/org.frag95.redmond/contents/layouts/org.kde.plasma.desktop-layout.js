@@ -5,6 +5,8 @@
 var panel = new Panel
 panel.location = "bottom"
 panel.height = Math.round(gridUnit * 1.6)
+// Win9x taskbar is anchored to the edge, not a floating bar.
+panel.floating = false
 
 // Start menu — org.kde.plasma.kicker is the classic cascading Application Menu
 // (as opposed to the modern full-screen Kickoff).

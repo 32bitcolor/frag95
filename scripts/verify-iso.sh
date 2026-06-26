@@ -23,6 +23,8 @@ unsquashfs -n -f -d /tmp/r /tmp/a.sfs \
     etc/pacman.conf var/lib/frag95-repo \
     etc/skel usr/share/color-schemes usr/share/plasma/look-and-feel \
     usr/local/bin usr/share/sddm/themes/breeze \
+    usr/share/aurorae usr/share/plasma/desktoptheme/reactplus \
+    usr/share/themes/Chicago95 usr/share/icons/Chicago95_Standard_Cursors \
     etc/calamares usr/share/applications >/dev/null 2>&1
 
 echo "==> Extracting package manifest"
@@ -108,19 +110,27 @@ pkg bottles;        check "Retro: bottles installed (from [frag95])" $?
 compgen -G "$R/var/lib/frag95-repo/dosbox-staging-*.pkg.tar.*" >/dev/null; check "[frag95] contains dosbox-staging" $?
 compgen -G "$R/var/lib/frag95-repo/bottles-*.pkg.tar.*"        >/dev/null; check "[frag95] contains bottles" $?
 
-echo "----- Phase 5: Windows 9x aesthetic -----"
+echo "----- Phase 5: Windows 9x aesthetic (authentic Win95 theme) -----"
 LNF="$R/usr/share/plasma/look-and-feel/org.frag95.redmond"
-[[ -f "$R/usr/share/color-schemes/Frag95.colors" ]];        check "Frag95 color scheme shipped" $?
-grep -q '0,0,128' "$R/usr/share/color-schemes/Frag95.colors" 2>/dev/null; check "color scheme has navy (9x) selection" $?
-[[ -f "$LNF/metadata.json" ]];                              check "look-and-feel package shipped" $?
-[[ -f "$LNF/contents/layouts/org.kde.plasma.desktop-layout.js" ]]; check "look-and-feel panel layout.js present" $?
+SK="$R/etc/skel/.config"
+[[ -f "$R/usr/share/color-schemes/Win98.colors" ]];         check "Win98 color scheme shipped" $?
+[[ -f "$R/usr/share/aurorae/themes/windows95-aurorae/metadata.desktop" ]]; check "windows95-aurorae decoration shipped" $?
+[[ -f "$R/usr/share/plasma/desktoptheme/reactplus/metadata.desktop" ]]; check "reactplus plasma theme shipped" $?
+[[ -d "$R/usr/share/icons/Chicago95_Standard_Cursors/cursors" || -f "$R/usr/share/icons/Chicago95_Standard_Cursors/index.theme" ]]; check "Chicago95 cursors shipped" $?
+[[ -f "$R/usr/share/themes/Chicago95/index.theme" ]];       check "Chicago95 GTK theme shipped" $?
+pkg chicago95-theme-git;                               check "Chicago95 icon theme installed (from [frag95])" $?
+compgen -G "$R/var/lib/frag95-repo/chicago95-theme-git-*.pkg.tar.*" >/dev/null; check "[frag95] contains chicago95-icon-theme" $?
+grep -q 'ColorScheme=Win98'  "$SK/kdeglobals" 2>/dev/null; check "skel kdeglobals -> Win98 colors" $?
+grep -q 'widgetStyle=Windows' "$SK/kdeglobals" 2>/dev/null; check "skel kdeglobals -> Windows (3D) widget style" $?
+grep -q 'Theme=Chicago95'    "$SK/kdeglobals" 2>/dev/null; check "skel kdeglobals -> Chicago95 icons" $?
+grep -q 'windows95-aurorae'  "$SK/kwinrc" 2>/dev/null;     check "skel kwinrc -> windows95-aurorae decoration" $?
+grep -q 'reactplus'          "$SK/plasmarc" 2>/dev/null;   check "skel plasmarc -> reactplus plasma theme" $?
+grep -q 'Chicago95'          "$SK/gtk-3.0/settings.ini" 2>/dev/null; check "skel GTK -> Chicago95 (GTK apps)" $?
+grep -q 'panel.floating = false' "$LNF/contents/layouts/org.kde.plasma.desktop-layout.js" 2>/dev/null; check "panel layout is non-floating" $?
 grep -q 'org.kde.plasma.kicker' "$LNF/contents/layouts/org.kde.plasma.desktop-layout.js" 2>/dev/null; check "layout uses classic Start menu (kicker)" $?
-grep -q '0,128,128' "$LNF/contents/layouts/org.kde.plasma.desktop-layout.js" 2>/dev/null; check "layout sets teal desktop" $?
-grep -q 'ColorScheme=Frag95' "$R/etc/skel/.config/kdeglobals" 2>/dev/null; check "skel kdeglobals selects Frag95 colors" $?
-grep -q 'LookAndFeelPackage=org.frag95.redmond' "$R/etc/skel/.config/kdeglobals" 2>/dev/null; check "skel kdeglobals selects the 9x global theme" $?
+grep -q 'ColorScheme=Win98'  "$LNF/contents/defaults" 2>/dev/null; check "look-and-feel defaults -> Win98 + Win95 components" $?
 [[ -x "$R/usr/local/bin/frag95-firstrun.sh" ]];             check "first-run theme script present + executable" $?
-[[ -f "$R/etc/skel/.config/autostart/frag95-firstrun.desktop" ]]; check "first-run autostart present in skel" $?
-grep -q '008080' "$R/usr/share/sddm/themes/breeze/theme.conf.user" 2>/dev/null; check "SDDM greeter recolored teal" $?
+[[ -f "$SK/autostart/frag95-firstrun.desktop" ]];          check "first-run autostart present in skel" $?
 
 echo "----- Phase 6: Calamares installer -----"
 pkg calamares;             check "Installer: calamares installed (from [frag95])" $?
@@ -134,7 +144,8 @@ CAL="$R/etc/calamares"
 [[ -f "$CAL/modules/bootloader.conf" ]];             check "calamares bootloader config shipped" $?
 grep -q 'initcpio' "$CAL/settings.conf" 2>/dev/null && ! grep -q 'mkinitcpio' "$CAL/settings.conf"; check "sequence uses the initcpio module (not mkinitcpio)" $?
 [[ -x "$R/usr/local/bin/frag95-apply-gpu.sh" ]];     check "GPU-apply script present + executable" $?
-[[ -x "$R/usr/local/bin/frag95-cleanup-install.sh" ]]; check "install-cleanup script present + executable" $?
+grep -q 'archiso.conf' "$CAL/modules/shellprocess_cleanup.conf" 2>/dev/null; check "inline cleanup de-archisos mkinitcpio" $?
+grep -q 'vmlinuz-linux' "$CAL/modules/shellprocess_cleanup.conf" 2>/dev/null; check "inline cleanup restores the kernel to /boot" $?
 [[ -f "$R/usr/share/applications/install-frag95.desktop" ]]; check "installer launcher shipped" $?
 compgen -G "$R/var/lib/frag95-repo/calamares-*.pkg.tar.*" >/dev/null; check "[frag95] contains calamares" $?
 

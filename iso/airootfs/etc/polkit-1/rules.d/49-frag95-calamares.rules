@@ -1,0 +1,11 @@
+// Frag95 live session: let the live user (in wheel) launch the Calamares
+// installer without a password prompt. The live 'frag' user's password is
+// locked (login is via SDDM autologin), so the polkit dialog can't otherwise
+// be satisfied. Calamares is removed from installed systems, so this rule is
+// effectively live-only (the cleanup step also deletes it on install).
+polkit.addRule(function (action, subject) {
+    if (action.id === "io.calamares.calamares.pkexec.run" &&
+        subject.isInGroup("wheel")) {
+        return polkit.Result.YES;
+    }
+});

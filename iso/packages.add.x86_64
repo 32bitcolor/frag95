@@ -136,3 +136,11 @@ arch-install-scripts
 grub
 efibootmgr
 os-prober
+
+# --- Windows 9x aesthetic (Phase 5): chicago95-theme-git (AUR, in [frag95])
+#     provides the Chicago95 icons (yellow folders), cursors, GTK theme + Win95
+#     VGA fonts in one package. The rest ships as vendored assets under
+#     iso/airootfs/usr/share (Win98 color scheme, windows95-aurorae decoration,
+#     reactplus plasma theme), all selected via /etc/skel. The Win9x widget look
+#     is Qt's built-in "Windows" style (in qt6-base), so it needs no package. ---
+chicago95-theme-git

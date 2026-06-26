@@ -56,6 +56,7 @@ PKGS=(
     fvs2 python-fvs python-setuptools-reproducible patool
     python-steamgriddb vkbasalt-cli python-pathvalidate bottles
     ckbcomp calamares
+    chicago95-theme-git
 )
 
 IS_ROOT=0; [[ "${EUID:-$(id -u)}" -eq 0 ]] && IS_ROOT=1

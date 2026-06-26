@@ -1,10 +1,11 @@
 [org.kde.kdecoration2]
-# Win9x button arrangement: system-menu icon on the left; minimize, maximize,
-# close on the right. Square Breeze decoration (no rounded corners theme here).
+# Win9x window decoration: the windows95-aurorae theme (raised gray titlebar,
+# navy active, 3D min/max/close buttons). Button layout: system-menu on the
+# left; minimize, maximize, close on the right.
 ButtonsOnLeft=M
 ButtonsOnRight=IAX
-library=org.kde.breeze
-theme=Breeze
+library=org.kde.kwin.aurorae
+theme=__aurorae__svg__windows95-aurorae
 
 [Windows]
 BorderlessMaximizedWindows=false

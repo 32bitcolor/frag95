@@ -1,5 +1,5 @@
 [General]
-ColorScheme=Frag95
+ColorScheme=Win98
 font=Liberation Sans,10,-1,5,50,0,0,0,0,0
 menuFont=Liberation Sans,10,-1,5,50,0,0,0,0,0
 smallestReadableFont=Liberation Sans,8,-1,5,50,0,0,0,0,0
@@ -9,7 +9,7 @@ toolBarFont=Liberation Sans,10,-1,5,50,0,0,0,0,0
 AnimationDurationFactor=0
 LookAndFeelPackage=org.frag95.redmond
 SingleClick=false
-widgetStyle=Breeze
+widgetStyle=Windows
 
 [Icons]
-Theme=breeze
+Theme=Chicago95
