@@ -8,6 +8,21 @@
 intel-ucode
 amd-ucode
 
+# --- Thermal + power management (gaming laptops run hot) ---
+# thermald proactively manages Intel CPU power/thermal limits via intel-rapl
+# (better sustained performance + lower temps than hardware-only throttling);
+# power-profiles-daemon gives KDE the Performance/Balanced/Power-Saver slider;
+# lm_sensors reads temps/fans. Services enabled in scripts/assemble-iso.sh.
+thermald
+power-profiles-daemon
+lm_sensors
+# msi-ec (upstream, via [frag95]): exposes MSI laptop EC controls (fan mode,
+# shift/performance mode, Cooler Boost) for the Frag95 performance profiles.
+# The driver refuses to load on non-MSI / unsupported firmware, so it's a safe
+# no-op everywhere else. (mainline msi-ec lacks many configs; this -git build
+# has them, incl. the Stealth 15M's 1563EMS1.115.)
+msi-ec-dkms-git
+
 # --- Kernel: mainline `linux` (from releng) + headers for nvidia-open-dkms ---
 # A single, well-integrated kernel; the no-autodetect initramfs-linux-fallback
 # image is the recovery path. (linux-lts was dropped: shipping a second kernel
@@ -69,6 +84,8 @@ dolphin
 kate
 ark
 spectacle
+# kdialog: backs the Frag95 GUI helpers (GPU Mode, Performance profiles)
+kdialog
 
 # --- Audio (PipeWire) ---
 pipewire

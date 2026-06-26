@@ -44,5 +44,15 @@ if [ -f "$src/pkgs" ]; then
     done < "$src/pkgs"
 fi
 
+# 4) NVIDIA Dynamic Boost (nvidia-powerd) for profiles with an NVIDIA dGPU. On
+#    supported Ampere+ laptops it balances the power budget between CPU and GPU
+#    under load (better gaming FPS); it self-disables where the SBIOS/HW doesn't
+#    support it, so enabling it only for nvidia/hybrid is safe + avoids a failed
+#    unit on AMD/Intel-only installs.
+case "$profile" in
+    nvidia|nvidia-legacy|hybrid)
+        systemctl enable nvidia-powerd.service 2>/dev/null || true ;;
+esac
+
 echo "frag95-apply-gpu: done ($profile)."
 exit 0

@@ -1,0 +1,10 @@
+// Let wheel users apply a Frag95 performance profile (sets EC fan/shift mode +
+// power profile) via pkexec without a password prompt. Low-risk: it only
+// changes fan aggressiveness and CPU power/performance, nothing destructive.
+polkit.addRule(function(action, subject) {
+    if (action.id == "org.freedesktop.policykit.exec" &&
+        action.lookup("program") == "/usr/local/bin/frag95-performance.sh" &&
+        subject.isInGroup("wheel") && subject.active) {
+        return polkit.Result.YES;
+    }
+});

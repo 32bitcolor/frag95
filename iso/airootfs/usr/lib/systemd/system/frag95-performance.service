@@ -1,0 +1,13 @@
+[Unit]
+Description=Re-apply the saved Frag95 performance/cooling profile
+# The MSI EC resets to defaults on every boot, so re-assert the saved profile.
+After=power-profiles-daemon.service systemd-modules-load.service
+Wants=power-profiles-daemon.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/bin/frag95-performance.sh restore
+
+[Install]
+WantedBy=multi-user.target

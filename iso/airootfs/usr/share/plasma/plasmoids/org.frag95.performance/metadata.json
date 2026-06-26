@@ -1,0 +1,16 @@
+{
+    "KPlugin": {
+        "Id": "org.frag95.performance",
+        "Name": "Frag95 Performance",
+        "Description": "Switch the performance and cooling profile from the system tray",
+        "Icon": "preferences-system-power-management",
+        "Category": "System Information",
+        "Authors": [{ "Name": "Frag95 Project" }],
+        "License": "GPL-3.0",
+        "Version": "1.0",
+        "EnabledByDefault": true
+    },
+    "KPackageStructure": "Plasma/Applet",
+    "X-Plasma-NotificationArea": "true",
+    "X-Plasma-NotificationAreaCategory": "Hardware"
+}

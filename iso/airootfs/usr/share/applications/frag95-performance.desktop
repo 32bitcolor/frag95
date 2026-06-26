@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Frag95 Performance
+GenericName=Performance & Cooling Profile
+Comment=Switch between Silent, Balanced, Performance and Extreme (Cooler Boost)
+Exec=/usr/local/bin/frag95-performance-gui.sh
+Icon=preferences-system-power-management
+Terminal=false
+Categories=Settings;HardwareSettings;Qt;KDE;
+Keywords=performance;cooling;fan;cooler boost;thermal;profile;turbo;silent;

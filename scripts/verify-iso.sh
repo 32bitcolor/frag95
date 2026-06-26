@@ -20,6 +20,7 @@ unsquashfs -n -f -d /tmp/r /tmp/a.sfs \
     etc/passwd etc/shadow \
     etc/sddm.conf.d etc/sudoers.d etc/xdg/kscreenlockerrc \
     etc/systemd/system usr/share/xsessions usr/share/frag95 \
+    etc/modules-load.d etc/polkit-1 \
     etc/pacman.conf var/lib/frag95-repo \
     etc/skel usr/share/color-schemes usr/share/plasma/look-and-feel \
     usr/local/bin usr/share/sddm/themes/breeze usr/share/sddm/themes/frag95 \
@@ -51,6 +52,21 @@ grep -q 'Autolock=false' "$R/etc/xdg/kscreenlockerrc"; check "screen lock disabl
 [[ "$(readlink "$R/etc/systemd/system/display-manager.service")" == *sddm.service ]]; check "display-manager -> sddm.service" $?
 [[ "$(readlink "$R/etc/systemd/system/systemd-networkd.service")" == /dev/null ]]; check "systemd-networkd masked" $?
 [[ -L "$R/etc/systemd/system/multi-user.target.wants/NetworkManager.service" ]]; check "NetworkManager enabled" $?
+pkg thermald;               check "thermald installed (Intel thermal mgmt)" $?
+pkg power-profiles-daemon;  check "power-profiles-daemon installed (KDE power slider)" $?
+pkg lm_sensors;             check "lm_sensors installed (temps/fans)" $?
+[[ -L "$R/etc/systemd/system/multi-user.target.wants/thermald.service" ]]; check "thermald enabled" $?
+[[ -L "$R/etc/systemd/system/graphical.target.wants/power-profiles-daemon.service" ]]; check "power-profiles-daemon enabled" $?
+# --- Performance/cooling profiles (msi-ec) ---
+pkg msi-ec-dkms-git;        check "msi-ec installed (MSI EC fan/perf control)" $?
+compgen -G "$R/var/lib/frag95-repo/msi-ec-dkms-git-*.pkg.tar.*" >/dev/null; check "[frag95] contains msi-ec-dkms-git" $?
+[[ -x "$R/usr/local/bin/frag95-performance.sh" ]];     check "frag95-performance CLI present + executable" $?
+[[ -x "$R/usr/local/bin/frag95-performance-gui.sh" ]]; check "frag95-performance GUI present + executable" $?
+[[ -f "$R/usr/share/applications/frag95-performance.desktop" ]]; check "Frag95 Performance launcher shipped" $?
+[[ -L "$R/etc/systemd/system/multi-user.target.wants/frag95-performance.service" ]]; check "performance-profile restore service enabled" $?
+grep -q '^msi-ec' "$R/etc/modules-load.d/frag95-msi-ec.conf" 2>/dev/null; check "msi-ec set to load at boot" $?
+grep -q 'frag95-performance.sh' "$R/etc/polkit-1/rules.d/49-frag95-performance.rules" 2>/dev/null; check "polkit lets wheel apply profiles w/o password" $?
+pkg kdialog; check "kdialog installed (backs GPU Mode + Performance GUIs)" $?
 
 echo "----- Phase 2: GPU drivers + profiles -----"
 pkg nvidia-open-dkms;        check "NVIDIA: nvidia-open-dkms installed" $?

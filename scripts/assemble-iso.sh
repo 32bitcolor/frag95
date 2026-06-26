@@ -70,6 +70,19 @@ ln -sf /usr/lib/systemd/system/NetworkManager.service \
     "$AIR/etc/systemd/system/multi-user.target.wants/NetworkManager.service"
 ln -sf /dev/null "$AIR/etc/systemd/system/systemd-networkd.service"
 ln -sf /dev/null "$AIR/etc/systemd/system/systemd-networkd.socket"
+# Thermal + power management for the installed system. thermald proactively
+# manages Intel CPU power/thermal limits (better sustained performance, lower
+# temps under load); power-profiles-daemon gives KDE the Performance/Balanced/
+# Power-Saver slider. Both ship in packages.add.x86_64.
+ln -sf /usr/lib/systemd/system/thermald.service \
+    "$AIR/etc/systemd/system/multi-user.target.wants/thermald.service"
+mkdir -p "$AIR/etc/systemd/system/graphical.target.wants"
+ln -sf /usr/lib/systemd/system/power-profiles-daemon.service \
+    "$AIR/etc/systemd/system/graphical.target.wants/power-profiles-daemon.service"
+# Re-apply the saved Frag95 performance/cooling profile on boot (the MSI EC
+# resets each boot). Unit ships in airootfs/usr/lib/systemd/system/.
+ln -sf /usr/lib/systemd/system/frag95-performance.service \
+    "$AIR/etc/systemd/system/multi-user.target.wants/frag95-performance.service"
 
 # Expose the bundled [frag95] repo to pacstrap. Our pacman.conf points [frag95]
 # at file:///var/lib/frag95-repo (the path on the live system); make that same
