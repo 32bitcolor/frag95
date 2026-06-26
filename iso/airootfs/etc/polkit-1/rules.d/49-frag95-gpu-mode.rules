@@ -1,0 +1,10 @@
+// Let wheel users switch the GPU mode (envycontrol) via pkexec without a
+// password prompt, mirroring the performance-profile rule. Low-risk: it only
+// reconfigures which GPU drives the display (applied after a reboot).
+polkit.addRule(function(action, subject) {
+    if (action.id == "org.freedesktop.policykit.exec" &&
+        action.lookup("program") == "/usr/local/bin/frag95-gpu-mode.sh" &&
+        subject.isInGroup("wheel") && subject.active) {
+        return polkit.Result.YES;
+    }
+});

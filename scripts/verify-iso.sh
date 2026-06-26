@@ -23,6 +23,7 @@ unsquashfs -n -f -d /tmp/r /tmp/a.sfs \
     etc/modules-load.d etc/polkit-1 \
     etc/pacman.conf var/lib/frag95-repo \
     etc/skel usr/share/color-schemes usr/share/plasma/look-and-feel \
+    usr/share/plasma/plasmoids \
     usr/local/bin usr/share/sddm/themes/breeze usr/share/sddm/themes/frag95 \
     usr/share/sounds/frag95 usr/share/icons/Chicago95 \
     usr/share/aurorae usr/share/plasma/desktoptheme/reactplus \
@@ -152,9 +153,15 @@ grep -q 'ColorScheme=Win98'  "$LNF/contents/defaults" 2>/dev/null; check "look-a
 [[ -x "$R/usr/local/bin/frag95-restore-theme.sh" ]];       check "restore-theme script present + executable" $?
 grep -q 'DefaultDarkLookAndFeel' "$R/usr/local/bin/frag95-restore-theme.sh" 2>/dev/null; check "restore-theme pins dark slot (Dark Mode stays in-theme)" $?
 [[ -f "$R/usr/share/applications/frag95-restore-theme.desktop" ]]; check "Restore Frag95 Theme launcher shipped" $?
-[[ -x "$R/usr/local/bin/frag95-gpu-mode.sh" ]];            check "GPU-mode GUI script present + executable" $?
+[[ -x "$R/usr/local/bin/frag95-gpu-mode.sh" ]];            check "GPU-mode CLI backend present + executable" $?
+[[ -x "$R/usr/local/bin/frag95-gpu-mode-gui.sh" ]];       check "GPU-mode kdialog GUI present + executable" $?
 grep -q 'TryExec=envycontrol' "$R/usr/share/applications/frag95-gpu-mode.desktop" 2>/dev/null; check "GPU-mode launcher hidden unless envycontrol present (hybrid only)" $?
 [[ -f "$R/usr/share/frag95/gpu/hybrid/pkgs" ]] && grep -q envycontrol "$R/usr/share/frag95/gpu/hybrid/pkgs"; check "hybrid profile pulls in envycontrol" $?
+grep -q 'pacman -Sy' "$R/usr/local/bin/frag95-apply-gpu.sh" 2>/dev/null; check "apply-gpu syncs [frag95] DB before installing (envycontrol fix)" $?
+grep -q 'frag95-gpu-mode.sh' "$R/etc/polkit-1/rules.d/49-frag95-gpu-mode.rules" 2>/dev/null; check "polkit lets wheel switch GPU mode w/o password" $?
+[[ -f "$R/usr/share/plasma/plasmoids/org.frag95.performance/contents/ui/main.qml" ]]; check "Performance tray plasmoid shipped" $?
+[[ -f "$R/usr/share/plasma/plasmoids/org.frag95.gpumode/contents/ui/main.qml" ]]; check "GPU Mode tray plasmoid shipped" $?
+grep -q 'X-Plasma-NotificationArea' "$R/usr/share/plasma/plasmoids/org.frag95.gpumode/metadata.json" 2>/dev/null; check "GPU Mode plasmoid is a system-tray applet" $?
 [[ -f "$R/usr/share/sounds/frag95/index.theme" ]];        check "Win9x sound theme shipped" $?
 [[ -f "$R/usr/share/sounds/frag95/stereo/desktop-login.oga" ]]; check "startup chime present in sound theme" $?
 SNDN=$(ls "$R/usr/share/sounds/frag95/stereo/"*.oga 2>/dev/null | wc -l); [[ "$SNDN" -ge 10 ]]; check "sound theme has the full event set (>=10 sounds)" $?

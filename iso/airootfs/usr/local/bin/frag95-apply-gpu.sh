@@ -36,8 +36,13 @@ if [ -f "$src/modules" ] && [ -f /etc/mkinitcpio.conf ]; then
 fi
 
 # 3) profile driver package(s): the live image ships nvidia-open-dkms; legacy
-#    swaps to nvidia-470xx-dkms (from [frag95]). Best-effort, offline.
+#    swaps to nvidia-470xx-dkms, hybrid pulls envycontrol (all from [frag95]).
+#    Sync the repo DBs first: [frag95] is a bundled local file repo whose sync
+#    DB may be absent on the target, so `pacman -S` alone fails offline (this is
+#    why envycontrol silently didn't install). -Sy is tolerant of offline
+#    official mirrors — the local [frag95] still syncs.
 if [ -f "$src/pkgs" ]; then
+    pacman -Sy --noconfirm 2>/dev/null || true
     while read -r p; do
         [ -z "$p" ] && continue
         pacman -S --noconfirm --needed "$p" 2>/dev/null || true

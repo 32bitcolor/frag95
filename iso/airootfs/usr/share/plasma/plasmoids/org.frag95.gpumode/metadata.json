@@ -1,0 +1,16 @@
+{
+    "KPlugin": {
+        "Id": "org.frag95.gpumode",
+        "Name": "Frag95 GPU Mode",
+        "Description": "Switch the hybrid-GPU mode (Integrated / Hybrid / NVIDIA) from the system tray",
+        "Icon": "preferences-desktop-display",
+        "Category": "System Information",
+        "Authors": [{ "Name": "Frag95 Project" }],
+        "License": "GPL-3.0",
+        "Version": "1.0",
+        "EnabledByDefault": true
+    },
+    "KPackageStructure": "Plasma/Applet",
+    "X-Plasma-NotificationArea": "true",
+    "X-Plasma-NotificationAreaCategory": "Hardware"
+}
