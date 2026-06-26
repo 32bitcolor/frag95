@@ -119,6 +119,7 @@ SK="$R/etc/skel/.config"
 [[ -d "$R/usr/share/icons/Chicago95_Standard_Cursors/cursors" || -f "$R/usr/share/icons/Chicago95_Standard_Cursors/index.theme" ]]; check "Chicago95 cursors shipped" $?
 [[ -f "$R/usr/share/themes/Chicago95/index.theme" ]];       check "Chicago95 GTK theme shipped" $?
 pkg chicago95-theme-git;                               check "Chicago95 icon theme installed (from [frag95])" $?
+grep -q '^Inherits=.*breeze' "$R/usr/share/icons/Chicago95/index.theme" 2>/dev/null; check "Chicago95 inherits breeze (tray icons fall back, not blank)" $?
 compgen -G "$R/var/lib/frag95-repo/chicago95-theme-git-*.pkg.tar.*" >/dev/null; check "[frag95] contains chicago95-icon-theme" $?
 grep -q 'ColorScheme=Win98'  "$SK/kdeglobals" 2>/dev/null; check "skel kdeglobals -> Win98 colors" $?
 grep -q 'widgetStyle=Windows' "$SK/kdeglobals" 2>/dev/null; check "skel kdeglobals -> Windows (3D) widget style" $?

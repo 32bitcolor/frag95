@@ -11,6 +11,17 @@
 #
 set -euo pipefail
 
+# Chicago95's icon theme ships with no Inherits line, so any icon it lacks
+# (modern Plasma tray icons like Brightness and Notifications) renders blank
+# instead of falling back. Chain it to breeze (a complete theme that's already
+# installed) so those icons resolve. Baked at build time, so it applies to both
+# the live session and the installed system (which derives from this squashfs).
+if [ -f /usr/share/icons/Chicago95/index.theme ] && \
+   ! grep -q '^Inherits=' /usr/share/icons/Chicago95/index.theme; then
+    sed -i '/^\[Icon Theme\]/a Inherits=hicolor,breeze' /usr/share/icons/Chicago95/index.theme
+    gtk-update-icon-cache -f /usr/share/icons/Chicago95 2>/dev/null || true
+fi
+
 # Frag95 live user (uid 1000, wheel for passwordless sudo). Password is left
 # locked: login is via SDDM autologin (see etc/sddm.conf.d/10-frag95.conf), and
 # admin tasks / AUR makepkg use passwordless wheel sudo (etc/sudoers.d/
