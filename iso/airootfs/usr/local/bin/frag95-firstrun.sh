@@ -9,8 +9,10 @@
 flag="${XDG_CONFIG_HOME:-$HOME/.config}/frag95-theme-applied"
 [ -e "$flag" ] && exit 0
 
-# --resetLayout makes plasmashell load the look-and-feel's panel layout.
-plasma-apply-lookandfeel --apply org.frag95.redmond --resetLayout >/dev/null 2>&1 || true
+# Apply the theme via the shared restore script (also pins the light/dark
+# theme slots so the Dark Mode toggle stays in-theme). The user can re-run it
+# any time from the "Restore Frag95 Theme" launcher.
+/usr/local/bin/frag95-restore-theme.sh >/dev/null 2>&1 || true
 
 mkdir -p "$(dirname "$flag")"
 : > "$flag"

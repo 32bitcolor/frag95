@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Restore Frag95 Theme
+GenericName=Reset Desktop Appearance
+Comment=Reset the desktop to the out-of-box Frag95 (Windows 9x) look
+Exec=/usr/local/bin/frag95-restore-theme.sh
+Icon=preferences-desktop-theme
+Terminal=false
+Categories=Settings;DesktopSettings;Qt;KDE;
+Keywords=theme;reset;restore;windows;9x;95;frag95;appearance;
