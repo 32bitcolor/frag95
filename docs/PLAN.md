@@ -22,7 +22,7 @@ Build host: **any OS** — `build.sh` builds the ISO in a privileged `archlinux`
 (`--engine native`). `build.ps1` is a native-Windows PowerShell wrapper for the same.
 
 ### Key technical findings
-- Arch ships **`nvidia-open`** as default for Turing+ → use **`nvidia-open-dkms`** (rebuilds across `linux`/`linux-lts`).
+- Arch ships **`nvidia-open`** as default for Turing+ → use **`nvidia-open-dkms`** (rebuilds against the `linux` kernel via DKMS).
 - Plasma Wayland + NVIDIA needs driver ≥555 (explicit sync, Plasma 6.1+).
 - Ampere laptop gotcha (MSI Stealth): GSP firmware bugs → fallback `nvidia.NVreg_EnableGpuFirmware=0`.
 - Hybrid/Optimus → PRIME render offload + `switcheroo-control` + `envycontrol`.
@@ -40,7 +40,7 @@ profile, then overlays our deltas from `iso/`:
 
 ## Package set (by concern)
 
-- **Base/boot:** `base base-devel linux linux-headers linux-lts linux-lts-headers linux-firmware mkinitcpio intel-ucode amd-ucode`.
+- **Base/boot:** `base base-devel linux linux-headers linux-firmware mkinitcpio intel-ucode amd-ucode`.
 - **NVIDIA:** `nvidia-open-dkms nvidia-utils lib32-nvidia-utils nvidia-settings opencl-nvidia egl-wayland libva-nvidia-driver`.
 - **AMD:** in-kernel `amdgpu` + `vulkan-radeon lib32-vulkan-radeon libva-mesa-driver mesa-vdpau`.
 - **Shared Mesa/Intel:** `mesa lib32-mesa vulkan-icd-loader lib32-vulkan-icd-loader vulkan-mesa-layers vulkan-intel lib32-vulkan-intel intel-media-driver`.

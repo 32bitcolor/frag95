@@ -8,12 +8,11 @@
 intel-ucode
 amd-ucode
 
-# --- Kernels: mainline + LTS fallback for broad hardware compatibility ---
-# linux (mainline) comes from releng; we add its headers so nvidia-open-dkms
-# can build against BOTH kernels.
+# --- Kernel: mainline `linux` (from releng) + headers for nvidia-open-dkms ---
+# A single, well-integrated kernel; the no-autodetect initramfs-linux-fallback
+# image is the recovery path. (linux-lts was dropped: shipping a second kernel
+# the installer didn't fully wire up caused an unbootable lts default entry.)
 linux-headers
-linux-lts
-linux-lts-headers
 
 # --- Display server (X11 default session) ---
 xorg-server

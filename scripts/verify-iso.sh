@@ -169,9 +169,9 @@ grep -q 'initcpio' "$CAL/settings.conf" 2>/dev/null && ! grep -q 'mkinitcpio' "$
 grep -q 'archiso.conf' "$CAL/modules/shellprocess_cleanup.conf" 2>/dev/null; check "inline cleanup de-archisos mkinitcpio" $?
 grep -q 'vmlinuz-linux' "$CAL/modules/shellprocess_cleanup.conf" 2>/dev/null; check "inline cleanup restores the kernel to /boot" $?
 grep -qE 'HOOKS=\(.*microcode' "$CAL/modules/shellprocess_cleanup.conf" 2>/dev/null; check "inline cleanup enables CPU microcode (bare-metal)" $?
-grep -q 'vmlinuz-linux-lts' "$CAL/modules/shellprocess_cleanup.conf" 2>/dev/null; check "inline cleanup restores the linux-lts fallback kernel" $?
+! grep -q 'vmlinuz-linux-lts' "$CAL/modules/shellprocess_cleanup.conf" 2>/dev/null; check "cleanup does NOT reference linux-lts (dropped)" $?
 pkg intel-ucode; check "intel-ucode installed (microcode source)" $?
-pkg linux-lts;   check "linux-lts fallback kernel installed" $?
+! pkg linux-lts; check "linux-lts NOT installed (single-kernel image)" $?
 [[ -f "$R/usr/share/applications/install-frag95.desktop" ]]; check "installer launcher shipped" $?
 compgen -G "$R/var/lib/frag95-repo/calamares-*.pkg.tar.*" >/dev/null; check "[frag95] contains calamares" $?
 
