@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+#
+# Run a command on the discrete (NVIDIA) GPU via PRIME render offload, on a
+# hybrid/Optimus laptop. The display stays on the iGPU; only this command (and
+# its children) render on the dGPU, which sleeps again afterwards.
+#
+#   frag95-run-dgpu <command> [args...]      e.g.  frag95-run-dgpu bolt-launcher
+#
+# This is the terminal/scriptable equivalent of Plasma's "Run with dedicated
+# GPU" context-menu action (which needs switcheroo-control running at login).
+#
+export __NV_PRIME_RENDER_OFFLOAD=1        # OpenGL/EGL offload to NVIDIA
+export __GLX_VENDOR_LIBRARY_NAME=nvidia
+export __VK_LAYER_NV_optimus=NVIDIA_only  # Vulkan -> NVIDIA
+export VK_LOADER_DRIVERS_SELECT=nvidia_icd.json
+exec "$@"

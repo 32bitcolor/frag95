@@ -133,6 +133,7 @@ pkg openssl-1.1;    check "Legacy: openssl-1.1 installed (libssl.so.1.1 for old 
 compgen -G "$R/var/lib/frag95-repo/gtk2-*.pkg.tar.*"        >/dev/null; check "[frag95] contains gtk2" $?
 compgen -G "$R/var/lib/frag95-repo/openssl-1.1-*.pkg.tar.*" >/dev/null; check "[frag95] contains openssl-1.1" $?
 [[ -L "$R/etc/systemd/system/graphical.target.wants/switcheroo-control.service" ]]; check "switcheroo-control enabled (Run with dedicated GPU)" $?
+[[ -x "$R/usr/local/bin/frag95-run-dgpu" ]] && grep -q '__NV_PRIME_RENDER_OFFLOAD' "$R/usr/local/bin/frag95-run-dgpu"; check "frag95-run-dgpu offload wrapper present" $?
 
 echo "----- Phase 5: Windows 9x aesthetic (authentic Win95 theme) -----"
 LNF="$R/usr/share/plasma/look-and-feel/org.frag95.redmond"
