@@ -130,6 +130,16 @@ for pkg in "${PKGS[@]}"; do
         rm -rf '$pkg'
         git clone --depth 1 'https://aur.archlinux.org/${pkg}.git'
         cd '$pkg'
+        # Import any PGP keys the PKGBUILD requires to verify signed source
+        # tarballs (e.g. openssl-1.1 ships the OpenSSL release key). makepkg
+        # does not auto-fetch these, so a missing key aborts the build.
+        mapfile -t _keys < <(bash -c '. ./PKGBUILD; printf \"%s\\n\" \"\${validpgpkeys[@]:-}\"' 2>/dev/null)
+        for _k in \"\${_keys[@]}\"; do
+            [[ -n \"\$_k\" ]] || continue
+            gpg --recv-keys \"\$_k\" 2>/dev/null \
+              || gpg --keyserver hkps://keyserver.ubuntu.com --recv-keys \"\$_k\" 2>/dev/null \
+              || echo \"  !! could not fetch key \$_k (build may fail PGP check)\" >&2
+        done
         makepkg $mkflags --noconfirm --clean
     "
     # Split PKGBUILDs (e.g. octopi) emit several package files — keep them all,
