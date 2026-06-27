@@ -145,6 +145,7 @@ grep -q 'Theme=Chicago95'    "$SK/kdeglobals" 2>/dev/null; check "skel kdeglobal
 grep -q 'windows95-aurorae'  "$SK/kwinrc" 2>/dev/null;     check "skel kwinrc -> windows95-aurorae decoration" $?
 grep -q 'reactplus'          "$SK/plasmarc" 2>/dev/null;   check "skel plasmarc -> reactplus plasma theme" $?
 grep -q 'Chicago95'          "$SK/gtk-3.0/settings.ini" 2>/dev/null; check "skel GTK -> Chicago95 (GTK apps)" $?
+grep -q 'Aur_Tool_Name=paru' "$SK/octopi/octopi.conf" 2>/dev/null; check "octopi AUR preset to paru (GUI AUR browsing)" $?
 grep -q 'panel.floating = false' "$LNF/contents/layouts/org.kde.plasma.desktop-layout.js" 2>/dev/null; check "panel layout is non-floating" $?
 grep -q 'org.kde.plasma.kicker' "$LNF/contents/layouts/org.kde.plasma.desktop-layout.js" 2>/dev/null; check "layout uses classic Start menu (kicker)" $?
 grep -q 'ColorScheme=Win98'  "$LNF/contents/defaults" 2>/dev/null; check "look-and-feel defaults -> Win98 + Win95 components" $?
