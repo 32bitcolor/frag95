@@ -79,7 +79,7 @@ build_native() {
     echo "==> Building the bundled [frag95] AUR repo (paru/octopi/...)"
     REPO="$REPO" "$REPO/scripts/build-localrepo.sh"
     echo "==> Native build with host mkarchiso (work dir: $work)"
-    $sudo env REPO="$REPO" WORK="$work" OUT="$REPO/out" "$REPO/scripts/assemble-iso.sh"
+    $sudo env REPO="$REPO" WORK="$work" OUT="$REPO/out" FRAG95_VERSION="${FRAG95_VERSION:-}" "$REPO/scripts/assemble-iso.sh"
     # mkarchiso ran as root; hand the outputs back to the invoking user.
     [[ -n "$sudo" ]] && $sudo chown "$(id -u):$(id -g)" "$REPO"/out/*.iso 2>/dev/null || true
 }
@@ -106,7 +106,7 @@ build_container() {
         -v "$REPO:/repo" \
         -v "$REPO/out:/out" \
         -v "frag95-pacman-cache:/var/cache/pacman/pkg" \
-        -e REPO=/repo -e WORK=/work -e OUT=/out \
+        -e REPO=/repo -e WORK=/work -e OUT=/out -e FRAG95_VERSION="${FRAG95_VERSION:-}" \
         "$IMAGE" /repo/scripts/build-in-container.sh
 }
 

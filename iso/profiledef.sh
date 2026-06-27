@@ -10,7 +10,8 @@ iso_name="frag95"
 iso_label="FRAG95_$(date +%y%m)"
 iso_publisher="Frag95 Project"
 iso_application="Frag95 Live / Install"
-iso_version="$(date +%Y.%m.%d)"
+# Release builds set FRAG95_VERSION (e.g. "1.0"); dev builds fall back to the date.
+iso_version="${FRAG95_VERSION:-$(date +%Y.%m.%d)}"
 install_dir="frag95"
 buildmodes=('iso')
 bootmodes=(
