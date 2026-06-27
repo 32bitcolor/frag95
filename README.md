@@ -74,11 +74,14 @@ or Rufus (DD mode). Boot in UEFI mode.
 
 ## Status
 
+**🎉 Frag95 1.0 is released** — see the
+[v1.0 release](https://github.com/32bitcolor/frag95/releases/tag/v1.0).
+
 Builds on Linux/macOS/Windows; the live ISO is validated each build by
-`scripts/verify-iso.sh` (currently **85/85** checks passing on a ~5 GB image).
-The Calamares installer (phase 6) is **scaffolded and under test** — the config
-ships and lints clean, but the install flow itself is being validated on real
-VMs. See `docs/PLAN.md` for the full roadmap.
+`scripts/verify-iso.sh` (currently **147/147** checks passing on the ~4.1 GB image).
+The Calamares installer is **complete and validated end-to-end** — installs and
+boots to the Win9x desktop on Proxmox VMs **and real hardware** (MSI laptop, UEFI
++ hybrid GPU). See `docs/PLAN.md` for the full roadmap.
 
 | Phase | Scope | Status |
 |------:|-------|--------|
@@ -87,16 +90,16 @@ VMs. See `docs/PLAN.md` for the full roadmap.
 | 2b | AUR out of the box — bundled `[frag95]` repo, `paru` + `octopi` pre-installed | ✅ Done |
 | 3  | Gaming layer — Steam, gamemode, gamescope, MangoHud, vkBasalt | ✅ Done |
 | 4  | Old-PC-games — DOSBox-Staging, ScummVM, Wine-staging, Lutris, Bottles, Heroic, DXVK | ✅ Done |
-| 5  | Windows 9x aesthetic — color scheme, classic Start menu, teal desktop, fonts, SDDM | ✅ Done¹ |
-| 6  | Calamares installer — themed, offline Arch install + auto GPU profile | 🚧 Scaffolded (testing) |
-| 7  | Hardware tuning + polish — sensors/thermal, vendor profiles, release autom. | ⬜ Planned |
+| 5  | Windows 9x aesthetic — color scheme, classic Start menu, teal desktop, fonts, SDDM | ✅ Done |
+| 6  | Calamares installer — themed, offline Arch install + auto GPU profile | ✅ Done |
+| 7  | Hardware tuning + polish — sensors/thermal, vendor profiles, release autom. | ✅ Done |
 
 **Driver coverage (phase 2):** the live ISO ships every GPU stack and boots
 vendor-agnostic. NVIDIA offers three install profiles — `nvidia-open-dkms` (the
 proprietary driver, Turing+), `nvidia-470xx` (legacy, pre-Turing), and `nouveau`
 (open-source) — plus AMD, Intel, hybrid/Optimus, and VM profiles.
 
-¹ The phase-5 theme is verified to *ship* correctly, but its visual result is
-confirmed on a real boot (phase 6+). Deferred refinements: an Aurorae Win9x
-titlebar, custom cursor/icon sets, a pixel MS-Sans font, and a Plymouth boot
-splash.
+The Win9x theme is confirmed on real-hardware boots (window decoration, classic
+Start menu, icons/cursors/fonts, login + logout greeters, and a synthesized CC0
+sound theme). Post-1.0 polish ideas: a Plymouth boot splash and a Firefox add-on
+for fully classic browser chrome.
