@@ -16,7 +16,26 @@ A 90s-aesthetic, gaming-first Linux distribution built on Arch Linux.
 
 See the full plan in `docs/PLAN.md` (mirror of the approved design).
 
+## Get Frag95
+
+**📖 Full step-by-step guide: [docs/BUILD.md](docs/BUILD.md)** — download or build, verify, flash, and boot.
+
+Quick paths:
+
+- **Download the prebuilt 1.0 ISO** (~4.1 GB, hosted on the Internet Archive):
+  <https://archive.org/download/frag95-1.0-x86_64/frag95-1.0-x86_64.iso>
+  (also linked from the [v1.0 release](https://github.com/32bitcolor/frag95/releases/tag/v1.0); SHA-256 `e39c1097…16b9e4`).
+- **Build it yourself** (any OS, needs only git + Docker/Podman):
+
+  ```bash
+  git clone https://github.com/32bitcolor/frag95.git
+  cd frag95
+  ./build.sh          # ISO lands in out/
+  ```
+
 ## Building (any OS)
+
+> For a precise, prerequisites-and-all walkthrough, see **[docs/BUILD.md](docs/BUILD.md)**.
 
 The ISO builds on **Linux, macOS, or Windows**. By default it builds inside a
 privileged `archlinux` container running `mkarchiso`, so **no Arch install is
@@ -69,8 +88,9 @@ is the thin container wrapper around it).
 
 ## Flashing to USB
 
-Write `out/frag95-*.iso` to a USB stick with [Ventoy](https://www.ventoy.net/) (recommended)
-or Rufus (DD mode). Boot in UEFI mode.
+Write `out/frag95-*.iso` to a USB stick with [Ventoy](https://www.ventoy.net/) (recommended),
+balenaEtcher, or Rufus (DD mode). Boot in UEFI mode with **Secure Boot disabled**.
+Step-by-step flashing + boot instructions are in **[docs/BUILD.md](docs/BUILD.md)**.
 
 ## Status
 
