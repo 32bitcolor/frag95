@@ -143,6 +143,15 @@ dxvk-bin
 heroic-games-launcher-bin
 bottles
 
+# --- Runtime libs + Java for games that need them ---
+# Many Java games (RuneScape/RuneLite via bolt, Minecraft, ...) need a JRE, and
+# older native Linux game binaries link EOL libraries Arch has dropped. gtk2 +
+# openssl-1.1 are AUR (built into [frag95]); they provide libgtk-x11-2.0 /
+# libssl.so.1.1 etc. that e.g. the RS3 NXT client (rs3linux) needs to launch.
+jre-openjdk
+gtk2
+openssl-1.1
+
 # --- Installer (Phase 6): the Calamares installer + Arch install tooling and
 #     GRUB (BIOS+UEFI) for the installed system. calamares + ckbcomp are AUR,
 #     prebuilt into the bundled [frag95] repo; the rest are official. ---

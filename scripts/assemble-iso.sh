@@ -83,6 +83,11 @@ ln -sf /usr/lib/systemd/system/power-profiles-daemon.service \
 # resets each boot). Unit ships in airootfs/usr/lib/systemd/system/.
 ln -sf /usr/lib/systemd/system/frag95-performance.service \
     "$AIR/etc/systemd/system/multi-user.target.wants/frag95-performance.service"
+# switcheroo-control: powers Plasma's "Run with dedicated GPU" menu entry on
+# hybrid laptops. It's D-Bus activated but Plasma needs it running to offer the
+# option, so enable it explicitly.
+ln -sf /usr/lib/systemd/system/switcheroo-control.service \
+    "$AIR/etc/systemd/system/graphical.target.wants/switcheroo-control.service"
 
 # Expose the bundled [frag95] repo to pacstrap. Our pacman.conf points [frag95]
 # at file:///var/lib/frag95-repo (the path on the live system); make that same

@@ -127,6 +127,12 @@ pkg heroic-games-launcher-bin; check "Retro: heroic-games-launcher-bin installed
 pkg bottles;        check "Retro: bottles installed (from [frag95])" $?
 compgen -G "$R/var/lib/frag95-repo/dosbox-staging-*.pkg.tar.*" >/dev/null; check "[frag95] contains dosbox-staging" $?
 compgen -G "$R/var/lib/frag95-repo/bottles-*.pkg.tar.*"        >/dev/null; check "[frag95] contains bottles" $?
+pkg jre-openjdk;    check "Java: jre-openjdk installed (RuneScape/Minecraft/...)" $?
+pkg gtk2;           check "Legacy: gtk2 installed (old game binaries, e.g. RS3 NXT)" $?
+pkg openssl-1.1;    check "Legacy: openssl-1.1 installed (libssl.so.1.1 for old binaries)" $?
+compgen -G "$R/var/lib/frag95-repo/gtk2-*.pkg.tar.*"        >/dev/null; check "[frag95] contains gtk2" $?
+compgen -G "$R/var/lib/frag95-repo/openssl-1.1-*.pkg.tar.*" >/dev/null; check "[frag95] contains openssl-1.1" $?
+[[ -L "$R/etc/systemd/system/graphical.target.wants/switcheroo-control.service" ]]; check "switcheroo-control enabled (Run with dedicated GPU)" $?
 
 echo "----- Phase 5: Windows 9x aesthetic (authentic Win95 theme) -----"
 LNF="$R/usr/share/plasma/look-and-feel/org.frag95.redmond"

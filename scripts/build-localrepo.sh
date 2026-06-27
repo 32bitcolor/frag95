@@ -58,6 +58,7 @@ PKGS=(
     ckbcomp calamares
     chicago95-theme-git
     msi-ec-dkms-git
+    gtk2 openssl-1.1
 )
 
 IS_ROOT=0; [[ "${EUID:-$(id -u)}" -eq 0 ]] && IS_ROOT=1
