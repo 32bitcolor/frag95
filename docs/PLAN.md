@@ -96,3 +96,12 @@ Data-driven vendor profiles applied by DMI detection; VMs detected via `systemd-
 - `scripts/qemu-test.sh` boot smoke test each phase.
 - Full Calamares-into-QEMU install as the primary dev loop.
 - **Honest limitation:** NVIDIA dGPU, hybrid switching, Wi-Fi, Cirrus amps, real gaming perf require real hardware (USB boot). The VM proves everything else.
+
+## Roadmap: 1.1 — aesthetic deepening
+1.0 shipped all 7 phases. 1.1 focuses on making *every* layer look the part — no new subsystems, mostly assets + config baked via skel / packages / the Calamares cleanup step (same approach as Phase 5). Visuals confirmed the 1.0 way: extend `verify-iso.sh` to assert assets ship, then a real VM-103 + laptop boot.
+
+- **A. Plymouth Win9x boot splash.** Add `plymouth` to `packages.add.x86_64`; ship a custom theme at `iso/airootfs/usr/share/plymouth/themes/frag95` (teal bg, Frag95 logo, classic progress bar). Wire on installed systems via the existing Calamares inline-cleanup step that writes `mkinitcpio.conf` — add the `plymouth` hook, add `splash` to the kernel cmdline, set the default theme in the target chroot. Enable on the live ISO too.
+- **B. Classic screensavers.** Ship `xscreensaver` (Frag95 is X11, so the real hacks work) with the iconic set: 3D Pipes, Mystify, Starfield, Maze, Flying Toasters. Skel `~/.xscreensaver` rotating only those with a sane timeout + a Start-menu config entry. Package + config only.
+- **C. Firefox classic chrome.** System-wide `userChrome.css` via Firefox autoconfig (`autoconfig.cfg` + `local-settings.js` in the install dir) so it applies to every profile without a per-user add-on — square gray toolbars/tabs, 9x scrollbars. Pair with `policies.json` to disable onboarding + set the homepage. (Supersedes the 1.0 "needs a FF add-on" note; `browser.tabs.inTitlebar=0` for the system titlebar already ships.)
+
+Deferred to 1.2+ (not in 1.1 scope): a "Welcome to Frag95" first-run tour, switchable theme variants (Win95/Win98/Hot Dog Stand), and a global CRT desktop shader (unreliable on KWin/X11 — stays per-game via vkBasalt).
